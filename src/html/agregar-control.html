@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <title>Control de Asistencia</title>
+</head>
+
+<body>
+  <div class="flexor">
+    <h5 class="blue">Control de Asistencia</h5>
+  </div>
+  <div class="historia-container agregar">
+
+    <label id="paciente"></label>
+    <button class="volver control">volver</button>
+    <form id="historia-form" autocomplete="off">
+
+      <div class="flexor fecha">
+        <input type="date" class="fechacontrolasistencia control" name="fechacontrolasistencia" value=""
+          class="input myWidth" />
+      </div>
+
+      <div id="div-control-asistencia">
+        <h6>Evaluacion General</h6>
+        <div class="textarea">
+          <textarea rows="6" id="evaluaciongeneral" name="evaluaciongeneral"></textarea>
+          <select id="selector-evaluacion" class="selector-conceptos">
+            <option value="" disabled selected>Evaluacion y Diagnostico:</option>
+            <option value="Concepto#1 Evaluacion y Diagnostico">Concepto#1 Evaluacion y Diagnostico</option>
+            <option value="Concepto#2 Evaluacion y Diagnostico">Concepto#2 Evaluacion y Diagnostico</option>
+            <option value="Concepto#3 Evaluacion y Diagnostico">Concepto#3 Evaluacion y Diagnostico</option>
+            <option value="Concepto#4 Evaluacion y Diagnostico">Concepto#4 Evaluacion y Diagnostico</option>
+            <option value="Concepto#5 Evaluacion y Diagnostico">Concepto#5 Evaluacion y Diagnostico</option>
+            <option value="Concepto#6 Evaluacion y Diagnostico">Concepto#6 Evaluacion y Diagnostico</option>
+            <option value="Concepto#7 Evaluacion y Diagnostico">Concepto#7 Evaluacion y Diagnostico</option>
+            <option value="Concepto#8 Evaluacion y Diagnostico">Concepto#8 Evaluacion y Diagnostico</option>
+            <option value="Concepto#9 Evaluacion y Diagnostico">Concepto#9 Evaluacion y Diagnostico</option>
+            <option value="Concepto#10 Evaluacion y Diagnostico">Concepto#10 Evaluacion y Diagnostico</option>
+          </select>
+        </div>
+        <h6>Tratamientos Aplicados</h6>
+        <div class="textarea">
+          <textarea rows="6" id="tratamientoaplicado" name="tratamientoaplicado"></textarea>
+          <select id="selector-tratamiento" class="selector-conceptos">
+            <option value="" disabled selected>Tratamientos:</option>
+            <option value="Concepto #1 de Tratamiento aplicado">Concepto#1 de Tratamiento aplicado </option>
+            <option value="Concepto #2 de Tratamiento aplicado">Concepto#2 de Tratamiento aplicado </option>
+            <option value="Concepto #3 de Tratamiento aplicado">Concepto#3 de Tratamiento aplicado </option>
+            <option value="Concepto #4 de Tratamiento aplicado">Concepto#4 de Tratamiento aplicado </option>
+            <option value="Concepto #5 de Tratamiento aplicado">Concepto#5 de Tratamiento aplicado </option>
+            <option value="Concepto #6 de Tratamiento aplicado">Concepto#6 de Tratamiento aplicado </option>
+            <option value="Concepto #7 de Tratamiento aplicado">Concepto#7 de Tratamiento aplicado </option>
+            <option value="Concepto #8 de Tratamiento aplicado">Concepto#8 de Tratamiento aplicado </option>
+            <option value="Concepto #9 de Tratamiento aplicado">Concepto#9 de Tratamiento aplicado </option>
+            <option value="Concepto #10 de Tratamiento aplicado">Concepto#10 de Tratamiento aplicado </option>
+          </select>
+        </div>
+
+        <h3>Informacion del Pago</h3>
+
+        <div class="inputs-collection">
+
+
+          <select id="formadepago">
+            <option value="" disabled selected>Modalidad</option>
+            <option value="Efectivo">Efectivo$</option>
+            <option value="Transferencia">Transferencia</option>
+            <option value="Pago-Movil">Pago-Movil</option>
+            <option value="Zelle">Zelle</option>
+            <option value="Otro">Otro</option>
+          </select>
+
+          <select id="select-banco">
+            <option value="" disabled selected>Banco</option>
+            <option value="Banesco">Banesco</option>
+            <option value="Venezuela">Venezuela</option>
+            <option value="Mercantil">Mercantil</option>
+            <option value="BNC">Banco BNC</option>
+            <option value="Tesoro">Tesoro</option>
+            <option value="BVC">Banco BVC</option>
+            <option value="Caribe">Caribe</option>
+            <option value="Otro">Otro</option>
+          </select>
+          <select id="tipo-pago">
+            <option value="" disabled selected>Tipo-Pago</option>
+            <option value="Total-Consulta">Total</option>
+            <option value="Abono a Cuenta">Abono</option>
+            <option value="Saldo Pendiente">Saldo</option>
+          </select>
+
+
+          <div class="input-container pagos">
+            <input type="text" id="referenciapago" name="referenciapago" value="" class="input" />
+            <label for="">Referencia</label>
+            <span>Referencia</span>
+          </div>
+          <div class="input-container pagos">
+            <input type="number" step="0.01" id="montopagado" name="montopagado" value="" class="input" />
+            <label for="">Monto US$</label>
+            <span>Monto US$</span>
+          </div>
+          <div class="input-container pagos">
+            <input type="number" step="0.01" id="cambiodia" name="cambiodia" value="" class="input" min="1"
+              max="5000" />
+            <label for="">Cambio Dia</label>
+            <span>Cambio Dia</span>
+          </div>
+          <div class="input-container pagos">
+            <input type="number" step="0.01" id="montopagadobs" name="montopagadobs" value="" class="input" />
+            <label for="">Monto Bs.</label>
+            <span>Monto Bs.</span>
+          </div>
+
+        </div>
+      </div>
+
+      <br />
+      <div class="btn-block">
+        <button type="submit" id="btn-registrar-paciente"" href=" /">Agregar Asistencia</button>
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <title>Odontograma</title>
+</head>
+
+<body>
+  <div class="odograma__container">
+    <div class="myspinner-container">
+      <div class="myspinner-text" data-spintext="Guardando! Espere.."></div>
+      <div class="myspinner-sector myspinner-sector-red"></div>
+      <div class="myspinner-sector myspinner-sector-blue"></div>
+      <div class="myspinner-sector myspinner-sector-green"></div>
+    </div>
+    <div id="draw-panel">
+      <div class="color-panel">
+        <div id="botonera-colores">
+          <button id="btncolor-negro" class="btn-color"></button>
+          <button id="btncolor-naranja" class="btn-color"></button>
+          <button id="btncolor-rojo" class="btn-color"></button>
+          <button id="btncolor-azul" class="btn-color"></button>
+          <button id="btncolor-verde" class="btn-color"></button>
+          <button id="color-actual" class="btn-color">actual</button>
+        </div>
+        <div>
+          <button id="btn-cerrar">Volver</button>
+        </div>
+      </div>
+      <hr>
+      <div id="botonera-grafica">
+        <button id="marcador" class="btn-dibujo t-tip" data-tip="Marcador"><img src="../images/marker-icon.png"
+            alt=""></button>
+        <button id="caries" class="btn-dibujo t-tip" data-tip="Caries"><img src="../images/caries.png" alt=""></button>
+        <button id="extraccion" class="btn-dibujo t-tip" data-tip="Extraccion"><img src="../images/extracion.png"
+            alt=""></button>
+        <button id="ausente" class="btn-dibujo t-tip" data-tip="Diente Ausente"><img src="../images/ausente.png"
+            alt=""></button>
+        <button id="puenteFijo" class="btn-dibujo t-tip" data-tip="Puente Fijo"><img id="img-puentefijo"
+            src="../images/puentefijo.png" alt=""></button>
+        <button id="lineaV" class="btn-dibujo t-tip" data-tip="Diastema"><img src="../images/paralelasV.png"
+            alt=""></button>
+        <button id="lineaH" class="btn-dibujo t-tip" data-tip="Por Definir"><img src="../images/paralelasH.png"
+            alt=""></button>
+        <button id="implante" class="btn-dibujo t-tip" data-tip="Implante"><img src="../images/implante.png"
+            alt=""></button>
+        <button id="removible" class="btn-dibujo t-tip" data-tip="Removible"><img id="img-removible"
+            src="../images/removible.png" alt=""></button>
+        <button id="hipersense" class="btn-dibujo t-tip" data-tip="Hipersensibilidad"><img id="img-hipersense"
+            src="../images/hipersense.png" alt=""></button>
+        <button id="apical" class="btn-dibujo t-tip" data-tip="Proceso Apical"><img src="../images/apical.png"
+            alt=""></button>
+        <button id="fistula" class="btn-dibujo t-tip" data-tip="Fistula"><img src="../images/fistula.png"
+            alt=""></button>
+        <button id="extrusion" class="btn-dibujo t-tip" data-tip="Extrusion"><img src="../images/extrusion.png"
+            alt=""></button>
+        <button id="infraoclusion" class="btn-dibujo t-tip" data-tip="Infraoclusion"><img
+            src="../images/infraoclusion.png" alt=""></button>
+        <button id="inclinacion" class="btn-dibujo t-tip" data-tip="Inclinacion"><img src="../images/inclinacion.png"
+            alt=""></button>
+        <button id="rotacion" class="btn-dibujo t-tip" data-tip="Rotacion"><img id="img-rotacion"
+            src="../images/rotacion.png" alt=""></button>
+        <button id="empaq-alimento" class="btn-dibujo t-tip" data-tip="Empaquetamiento de Alimentos"><img
+            src="../images/empaq-alimentos.png" alt=""></button>
+        <button id="profundidad-sondaje" class="btn-dibujo t-tip" data-tip="Profundidad de Sondaje">PS</button>
+        <button id="frenillo" class="btn-dibujo" data-tip="Frenillo">Y</button>
+        <button id="nivel-insersion" class="btn-dibujo t-tip" data-tip="Nivel de Insersion Clinica">NIC</button>
+        <button id="sangramiento-sondaje" class="btn-dibujo t-tip" data-tip="Sangramiento al Sondaje">SS.</button>
+        <button id="mucosa-masticadora" class="btn-dibujo t-tip" data-tip="Mucosa Masticadora">MM</button>
+        <button id="defecto-mucogingival" class="btn-dibujo t-tip" data-tip="Defecto Mucogingival">DMG</button>
+        <button id="movilidad-dentaria" class="btn-dibujo t-tip" data-tip="Movilidad Dentaria">MOV</button>
+        <button id="protesis-defectuosa" class="btn-dibujo t-tip" data-tip="Protesis Defectuosa">PD</button>
+        <button id="compromiso-furcacion" class="btn-dibujo t-tip" data-tip="Compromiso Furcacion">CF</button>
+        <button id="clear" class="btn-dibujo t-tip" data-tip="Deshacer Todo"><img src="../images/broom-icon.png"
+            alt=""></button>
+        <button id="download" class="btn-dibujo t-tip" data-tip="Descargar">
+          <a id="downloadToImage"><img src="../images/download-icon.png" alt=""></a>
+        </button>
+      </div>
+      <hr>
+      <div class="guardar">
+
+        <a id="saveToImage">Guardar</a>
+      </div>
+    </div>
+    <div class="canvas-container"></div>
+  </div>
+</body>
+
+</html>

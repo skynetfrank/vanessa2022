@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <title>Paciente Nuevo - Historia</title>
+</head>
+
+<body>
+  <div class="historia-container">
+    <div class="banner">
+      <button class="volver">volver</button>
+      <h1>Paciente Nuevo</h1>
+    </div>
+    <form id="historia-form" autocomplete="off">
+      <h5>Datos Personales</h5>
+
+      <div class="inputs-collection">
+        <div class="input-container">
+          <input type="text" name="nombre" id="nombre" autocapitalize="senteces" class="input" required />
+          <label for="">Nombre</label>
+          <span>Nombre</span>
+        </div>
+        <div class="input-container">
+          <input type="text" name="apellido" id="apellido" autocapitalize="senteces" class="input" required />
+          <label for="">Apellido</label>
+          <span>Apellido</span>
+        </div>
+        <div class="input-container">
+          <input type="text" id="cedula" value="" class="input" />
+          <label for="">C&eacutedula</label>
+          <span>C&eacutedula</span>
+        </div>
+        <div class="input-container">
+          <input type="date" id="fnacimiento" value="" class="input" min="1940-01-01" max="2021-01-01" />
+          <label class="label-fnac" for="">Fecha Nacimiento</label>
+          <span class="span-fnac">Fecha Nacimiento</span>
+        </div>
+        <div class="input-container">
+          <input type="tel" id="celular" value="" class="input" />
+          <label for="">Tel&eacutefono Celular</label>
+          <span>Tel&acuteefono Celular</span>
+        </div>
+        <div class="input-container">
+          <input type="tel" id="tlflocal" value="" class="input" />
+          <label for="">Tel&eacutefono Local</label>
+          <span>Tel&eacutefono Local</span>
+        </div>
+        <div class="input-container">
+          <input type="text" id="email" value="" class="input" />
+          <label for="">Email</label>
+          <span>Email</span>
+        </div>
+        <div class="input-container">
+          <input type="text" id="direccion1" value="" class="input" />
+          <label for="">Direcci&oacuten</label>
+          <span>Direcci&oacuten</span>
+        </div>
+        <div class="input-container">
+          <input type="text" id="contacto" value="" class="input" />
+          <label for="">Contacto</label>
+          <span>Contacto</span>
+        </div>
+        <div class="input-container">
+          <input type="number" id="edad" value="" class="input" step="1" min="2" max="99" />
+          <label for="">Edad (años)</label>
+          <span>Edad (años)</span>
+        </div>
+        <div class="input-container">
+          <input type="number" id="estatura" value="" class="input" step="0.01" min="0.50" max="2.20" />
+          <label for="">Estatura (Mts)</label>
+          <span>Estatura (Mts)</span>
+        </div>
+        <div class="input-container">
+          <input type="number" id="peso" value="" class="input" step="0.01" min="10" max="250" />
+          <label for="">Peso (Kgs)</label>
+          <span>Peso (Kgs)</span>
+        </div>
+      </div>
+
+      <div>
+        <p>G&eacutenero:</p>
+        <input type="radio" value="hombre" id="checkgenero1" name="checkgenero" />
+        <label for="checkgenero1" class="radio"><span>Hombre</span></label>
+        <input type="radio" value="mujer" id="checkgenero2" name="checkgenero" />
+        <label for="checkgenero2" class="radio"><span>Mujer</span></label>
+        <input type="radio" value="diverso" id="checkgenero3" name="checkgenero" />
+        <label for="checkgenero3" class="radio"><span>Diverso</span></label>
+        <input type="radio" value="" id="checkgenero4" name="checkgenero" checked />
+      </div>
+      <div>
+        <p class="hidden">Estado Civil:</p>
+        <input type="radio" id="checkedocivil1" name="checkedocivil" value="soltero" />
+        <label for="checkedocivil1" class="radio"><span>Soltero</span></label>
+        <input type="radio" id="checkedocivil2" name="checkedocivil" value="casado" />
+        <label for="checkedocivil2" class="radio"><span>Casado</span></label>
+        <input type="radio" id="checkedocivil3" name="checkedocivil" value="divorciado" />
+        <label for="checkedocivil3" class="radio"><span>Divorciado</span></label>
+        <input type="radio" id="checkedocivil4" name="checkedocivil" value="otro" />
+        <label for="checkedocivil4" class="radio"><span>Otro</span></label>
+        <input type="radio" id="checkedocivil5" name="checkedocivil" value="" checked />
+      </div>
+
+      <h5>Historia M&eacutedica</h5>
+      <div>
+        <div>
+          <p>Esta siendo tratado por un m&eacutedico actualmente?</p>
+          <input type="radio" id="checktratadopormedico1" name="checktratadopormedico" value="true" />
+          <label for="checktratadopormedico1" class="radio"><span>Si</span></label>
+          <input type="radio" id="checktratadopormedico2" name="checktratadopormedico" value="false" />
+          <label for="checktratadopormedico2" class="radio"><span>No</span></label>
+          <input type="radio" id="checktratadopormedico3" name="checktratadopormedico" value="" checked />
+        </div>
+        <div class="input-container">
+          <input type="text" name="tratadoporenfermedad" id="tratadoporenfermedad" value="" class="input" />
+          <label for="">Para que enfermedad?</label>
+          <span>Para que enfermedad?</span>
+        </div>
+        <div>
+          <p>Esta tomando algun medicamento o alguna droga??</p>
+          <input type="radio" id="checktomamedicamento1" name="checktomamedicamento" value="true" />
+          <label for="checktomamedicamento1" class="radio"><span>Si</span></label>
+          <input type="radio" id="checktomamedicamento2" name="checktomamedicamento" value="false" />
+          <label for="checktomamedicamento2" class="radio"><span>No</span></label>
+          <input type="radio" id="checktomamedicamento3" name="checktomamedicamento" value="" checked />
+        </div>
+
+        <div class="inputs-collection">
+          <div class="input-container large">
+            <input type="text" name="cualesmedicamentos" id="cualesmedicamentos" value="" class="input" />
+            <label for="">Cu&aacuteles medicamentos?</label>
+            <span>Cu&aacuteles medicamentos?</span>
+          </div>
+          <div class="input-container large">
+            <input type="text" name="dosismeds" id="dosismeds" value="" class="input" />
+            <label for="">Describa las dosis</label>
+            <span>Describa las dosis</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div>
+        <p>Marque si es al&eacutergico a los siguientes:</p>
+        <div class="inputs-collection">
+          <input type="checkbox" id="checkaspirina" name="checkaspirina" value="aspirina" />
+          <label for="checkaspirina" class="check"><span>Aspirina</span></label>
+          <input type="checkbox" id="checkpenicilina" name="checkpenicilina" value="penicilina" />
+          <label for="checkpenicilina" class="check"><span>Penicilina</span></label>
+          <input type="checkbox" id="checkcodeina" name="checkcodeina" value="codeina" />
+          <label for="checkcodeina" class="check"><span>Code&iacutena</span></label>
+          <input type="checkbox" id="checklatex" name="checklatex" value="latex" />
+          <label for="checklatex" class="check"><span>Latex</span></label>
+          <input type="checkbox" id="checkacrilico" name="checkacrilico" value="acrilico" />
+          <label for="checkacrilico" class="check"><span>Acr&iacutelico</span></label>
+          <input type="checkbox" id="checkanestecialocal" name="checkanestecialocal" value="anesteciaLocal" />
+          <label for="checkanestecialocal" class="check"><span>Anestecia Local</span></label>
+        </div>
+      </div>
+      <p>Es alergico a alg&uacuten otro medicamento? especifique</p>
+      <div>
+        <textarea rows="2" placeholder="otras alergias" id="textalergicootros" name="textalergicootros">
+        </textarea>
+      </div>
+      <div>
+        <p>Por favor marque solo si su respuesta es positiva</p>
+        <div class="question-answer checkbox-item">
+          <div>
+            <input type="checkbox" id="checkcirugias" name="checkcirugias" value="tuvoCirugias" />
+            <label for="checkcirugias" class="check"><span>Ha sido hospitalizado o tuvo una
+                cirug&iacutea?</span></label>
+          </div>
+          <div>
+            <input type="checkbox" id="checklesiones" name="checklesiones" value="lesionesCabeza" />
+            <label for="checklesiones" class="check head"><span>Ha tenildo esi&oacuten grave en cabeza o
+                cuello?</span></label>
+          </div>
+          <div>
+            <input type="checkbox" id="checkdieta" name="checkdieta" value="tieneDieta" />
+            <label for="checkdieta" class="check"><span>Tiene alguna dieta especial?</span></label>
+          </div>
+          <div>
+            <input type="checkbox" id="checkfumador" name="checkfumador" value="esFumador" />
+            <label for="checkfumador" class="check"><span>Es fumador o consume alg&uacuten tipo de
+                tabaco?</span></label>
+          </div>
+          <div>
+            <input type="checkbox" id="checkcontroladas" name="checkcontroladas" value="usaControladas" />
+            <label for="checkcontroladas" class="check"><span>Usa sustancias controladas?</span></label>
+          </div>
+          <div>
+            <input type="checkbox" id="checkembarazada" name="checkembarazada" value="estaEmbarazada" />
+            <label for="checkembarazada" class="check"><span>Esta embarazada?</span></label>
+          </div>
+          <div>
+            <input type="checkbox" id="checkanticonceptivos" name="checkanticonceptivos" value="tomaAnticoceptivos" />
+            <label for="checkanticonceptivos" class="check"><span>Esta tomando anticonceptivos orales?</span></label>
+          </div>
+          <div>
+            <input type="checkbox" id="checkamamantando" name="checkamamantando" value="estaAmamantando" />
+            <label for="checkamamantando" class="check"><span>Esta amamantando actualmente?</span></label>
+          </div>
+          <p>Si posee alg&uacuten h&aacutebito, describa cual y frecuencia.</p>
+          <div>
+            <textarea rows="2" id="texthabitos" placeholder="habitos" name="texthabitos"></textarea>
+          </div>
+        </div>
+      </div>
+      <br />
+
+      <h5>Antecedentes Familiares</h5>
+      <p>Alg&uacuten familiar ha sufrido de:</p>
+      <div class="inputs-collection">
+        <input type="checkbox" id="checkcancer" name="checkcancer" value="herenciaCancer" />
+        <label for="checkcancer" class="check"><span>Cancer</span></label>
+        <input type="checkbox" id="checktuberculosis" name="checktuberculosis" value="herenciatuberculosis" />
+        <label for="checktuberculosis" class="check"><span>Tuberculosis</span></label>
+        <input type="checkbox" id="checkhiv" name="checkhiv" value="herenciaHiv" />
+        <label for="checkhiv" class="check"><span>H.I.V</span></label>
+        <input type="checkbox" id="checkdiabetes" name="checkdiabetes" value="herenciaDiabetes" />
+        <label for="checkdiabetes" class="check"><span>Diabetes</span></label>
+        <input type="checkbox" id="checkvenereas" name="checkvenereas" value="herenciaVenereas" />
+        <label for="checkvenereas" class="check"><span>Ven&eacutereas</span></label>
+        <input type="checkbox" id="checkcardiovasculares" name="checkcardiovasculares"
+          value="herenciaCardiovasculares" />
+        <label for="checkcardiovasculares" class="check"><span>Cardiovasculares</span></label>
+        <input type="checkbox" id="checkhemorragicas" name="checkhemorragicas" value="herenciaHemorragicas" />
+        <label for="checkhemorragicas" class="check"><span>Hemorr&aacutegicas</span></label>
+      </div>
+      <div>
+        <p>Alguna otra enfermedad?</p>
+        <input type="text" id="otraenfermedad" name="otraenfermedad" value="" class="input" />
+      </div>
+      <h5 class="blue">Primera Consulta</h5>
+      <div class="flexor">
+        <input type="date" class="fechacontrolasistencia" name="fechacontrolasistencia" value=""
+          class="input myWidth" />
+      </div>
+      <div>
+        <p>Motivo de esta consulta</p>
+        <input type="text" id="motivoprincipalconsulta" name="motivoprincipalconsulta" value="" class="input" />
+      </div>
+      <div>
+        <p>Fecha de &uacuteltima consulta</p>
+        <input type="text" id="fechaultimaconsulta" name="fechaultimaconsulta" value="" class="input" />
+      </div>
+      <div>
+        <p>Motivo de &uacuteltima consulta</p>
+        <input type="text" id="motivoultimaconsulta" name="motivoultimaconsulta" value="" class="input" />
+      </div>
+      <div>
+        <div>
+          <p>Alguna complicaci&oacuten desde la &uacuteltima consulta?</p>
+          <input type="radio" id="checkcomplicaciones1" name="checkcomplicaciones" value="true" />
+          <label for="checkcomplicaciones1" class="radio"><span>Si</span></label>
+          <input type="radio" id="checkcomplicaciones2" name="checkcomplicaciones" value="false" />
+          <label for="checkcomplicaciones2" class="radio"><span>No</span></label>
+          <input type="radio" id="checkcomplicaciones3" name="checkcomplicaciones" value="" checked />
+        </div>
+        <div>
+          <p>Describa esas complicaciones</p>
+          <input type="text" name="cualescomplicaciones" id="cualescomplicaciones" value="" class="input" />
+        </div>
+      </div>
+      <br />
+      <div id="div-control-asistencia">
+        <h6>Evaluaci&oacuten General</h6>
+        <div class="textarea">
+          <textarea rows="6" id="evaluaciongeneral" name="evaluaciongeneral"></textarea>
+          <select id="selector-evaluacion" class="selector-conceptos">
+            <option value="" disabled selected>Conceptos:</option>
+            <option value="Concepto de evaluacion y Diagnostico de Paciente #1">Concepto de evaluacion y Diagnostico de
+              Paciente #1</option>
+            <option value="evaluacion-concepto2">Concepto de evaluacion y Diagnostico de Paciente #2</option>
+            <option value="evaluacion-concepto3">Concepto de evaluacion y Diagnostico de Paciente #3</option>
+            <option value="evaluacion-concepto4">Concepto de evaluacion y Diagnostico de Paciente #4</option>
+            <option value="evaluacion-concepto5">Concepto de evaluacion y Diagnostico de Paciente #5</option>
+            <option value="evaluacion-concepto6">Concepto de evaluacion y Diagnostico de Paciente #6</option>
+            <option value="evaluacion-concepto7">Concepto de evaluacion y Diagnostico de Paciente #7</option>
+            <option value="evaluacion-concepto8">Concepto de evaluacion y Diagnostico de Paciente #8</option>
+            <option value="evaluacion-concepto9">Concepto de evaluacion y Diagnostico de Paciente #9</option>
+            <option value="evaluacion-concepto10">Concepto de evaluacion y Diagnostico de Paciente #10</option>
+          </select>
+        </div>
+        <h6>Tratamientos Aplicados</h6>
+        <div class="textarea">
+          <textarea rows="6" id="tratamientoaplicado" name="tratamientoaplicado"></textarea>
+          <select id="selector-tratamiento" class="selector-conceptos">
+            <option value="" disabled selected>Conceptos:</option>
+            <option value="Tratamiento-concepto1">Concepto de tratamiento aplicado a Paciente #1</option>
+            <option value="Tratamiento-concepto2">Concepto de tratamiento aplicado a Paciente #2</option>
+            <option value="Tratamiento-concepto3">Concepto de tratamiento aplicado a Paciente #3</option>
+            <option value="Tratamiento-concepto4">Concepto de tratamiento aplicado a Paciente #4</option>
+            <option value="Tratamiento-concepto5">Concepto de tratamiento aplicado a Paciente #5</option>
+            <option value="Tratamiento-concepto6">Concepto de tratamiento aplicado a Paciente #6</option>
+            <option value="Tratamiento-concepto7">Concepto de tratamiento aplicado a Paciente #7</option>
+            <option value="Tratamiento-concepto8">Concepto de tratamiento aplicado a Paciente #8</option>
+            <option value="Tratamiento-concepto9">Concepto de tratamiento aplicado a Paciente #9</option>
+            <option value="Tratamiento-concepto10">Concepto de tratamiento aplicado a Paciente #10</option>
+          </select>
+        </div>
+
+        <h5>Informaci&oacuten del Pago</h5>
+
+        <div class="inputs-collection">
+
+
+          <select id="formadepago">
+            <option value="" disabled selected>Forma</option>
+            <option value="Efectivo">Efectivo$</option>
+            <option value="Transferencia">Transferencia</option>
+            <option value="Pago-Movil">Pago-Movil</option>
+            <option value="Zelle">Zelle</option>
+            <option value="Otro">Otro</option>
+          </select>
+
+          <select id="select-banco">
+            <option value="" disabled selected>Banco</option>
+            <option value="Banesco">Banesco Banco Universal</option>
+            <option value="Venezuela">Banco de Venezuela</option>
+            <option value="Mercantil">Banco Mercantil</option>
+            <option value="Provincial">Banco Provincial</option>
+            <option value="Caribe">Banco del Caribe</option>
+            <option value="BNC">BNC Nacional de Credito</option>
+            <option value="Tesoro">Banco del Tesoro</option>
+            <option value="Bancamiga">Bancamiga</option>
+            <option value="BVC">Banco Vzlno. d/Credito</option>
+            <option value="BOD">Banco BOD</option>
+            <option value="Otro">Otro</option>
+          </select>
+          <select id="tipo-pago">
+            <option value="" disabled selected>Tipo</option>
+            <option value="Total">Pago Total de Consulta</option>
+            <option value="Abono">Pago Abono a Cuenta</option>
+            <option value="Saldo">Pago Saldo Pendiente</option>
+          </select>
+
+
+          <div class="input-container pagos">
+            <input type="text" id="referenciapago" name="referenciapago" value="" class="input" />
+            <label for="">Referencia</label>
+            <span>Referencia</span>
+          </div>
+          <div class="input-container pagos">
+            <input type="number" step="0.01" id="montopagado" name="montopagado" value="" class="input" />
+            <label for="">Monto US$</label>
+            <span>Monto US$</span>
+          </div>
+          <div class="input-container pagos">
+            <input type="number" step="0.01" id="cambiodia" name="cambiodia" value="" class="input" min="1"
+              max="5000" />
+            <label for="">Cambio D&iacutea</label>
+            <span>Cambio D&iacutea</span>
+          </div>
+          <div class="input-container pagos">
+            <input type="number" step="0.01" id="montopagadobs" name="montopagadobs" value="" class="input" />
+            <label for="">Monto Bs.</label>
+            <span>Monto Bs.</span>
+          </div>
+
+        </div>
+      </div>
+
+      <br />
+      <div class="btn-block">
+        <button type="submit" id="btn-registrar-paciente"" href=" /">Registrar Nueva Historia</button>
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>

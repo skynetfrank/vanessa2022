@@ -1,0 +1,735 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+* {
+  padding: 0;
+  margin: 0;
+  outline: none;
+  font-size: 14px;
+  color: #666;
+  text-decoration: none;
+}
+
+div {
+  margin-bottom: 3px;
+  position: relative;
+}
+
+.historia-container {
+  width: 65%;
+  margin: 10px auto;
+  box-shadow: 0 0 5px 0 #047e91;
+  border-radius: 5px;
+}
+
+.historia-container > form {
+  background: #fff;
+  padding: 10px;
+  position: relative;
+}
+
+.historia-container button {
+  width: 200px;
+  padding: 5px;
+  border: none;
+  background: rgb(4, 223, 223);
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.banner {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  z-index: 999999;
+  border-radius: 5px 5px 0px 0px;
+  background-color: #9132bd;
+}
+
+h1 {
+  font-size: 32px;
+  color: #fff;
+  margin: 10px;
+}
+
+h1.blue {
+  color: #265a6e;
+}
+
+h5 {
+  width: fit-content;
+  color: #265a6e;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 10px auto;
+}
+
+h3 {
+  width: fit-content;
+  font-size: 1.3rem;
+  color: #265a6e;
+  font-weight: bold;
+  margin: 10px auto;
+}
+
+button.volver {
+  width: 60px;
+  height: 100%;
+  position: absolute;
+  left: 0px;
+  z-index: 9999;
+}
+
+button.volver:hover {
+  background: aqua;
+  text-decoration: underline;
+  color: black;
+}
+
+.selector-conceptos {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 0;
+  right: 0px;
+  background-color: orange;
+  border-radius: 0px;
+  border: 1px solid black;
+  color: black;
+  padding: 0 0 0 10px;
+  margin: 0;
+}
+
+option {
+  background-color: #fff;
+}
+
+#btn-registrar-paciente:hover {
+  background: #28bbac;
+}
+
+/*  input customs   */
+
+.checkbox-item label {
+  margin: 5px 15px 10px 0;
+}
+
+.inputs-collection {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.questions-collection {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.justificar {
+  justify-content: stretch;
+}
+
+.input-container {
+  position: relative;
+  margin: 0 0 5px 0;
+}
+
+.input-container.large {
+  min-width: 50%;
+}
+
+.input {
+  width: 180px;
+  border: 1px solid rgb(6, 173, 173);
+  background-color: rgb(250, 246, 246);
+  padding: 0.6rem;
+  color: orangered;
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  border-radius: 10px;
+  transition: 0.3s;
+  margin-bottom: 5px;
+}
+
+.input-container.pagos > input {
+  width: 125px;
+}
+
+textarea.input {
+  padding: 0.8rem 1.2rem;
+  min-height: 150px;
+  border-radius: 22px;
+  resize: none;
+  overflow-y: auto;
+  background-color: rgb(250, 246, 246);
+}
+
+.input-container label {
+  position: absolute;
+  top: 45%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: rgb(182, 181, 181);
+  pointer-events: none;
+  z-index: 999;
+  transition: 0.5s;
+}
+
+.input-container.textarea label {
+  top: 1rem;
+  transform: translateY(0);
+}
+
+.input-container span {
+  position: absolute;
+  top: 0;
+  left: 25px;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  padding: 0 0.4rem;
+  color: transparent;
+  pointer-events: none;
+  z-index: 500;
+  margin-left: 0 !important;
+}
+
+.input-container span:before,
+.input-container span:after {
+  content: '';
+  position: absolute;
+  width: 10%;
+  opacity: 0;
+  transition: 0.3s;
+  height: 5px;
+  background-color: white;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.input-container span:before {
+  left: 50%;
+}
+
+.input-container span:after {
+  right: 50%;
+}
+
+.input-container.focus label {
+  top: 0;
+  transform: translateY(-50%);
+  left: 20px;
+  font-size: 0.9rem;
+  color: rgb(6, 94, 94);
+  font-weight: bold;
+}
+
+.input-container.focus span:before,
+.input-container.focus span:after {
+  width: 50%;
+  opacity: 1;
+}
+
+.input-container label.label-fnac {
+  top: 15%;
+  /*transform: translateX(125%);*/
+  font-size: 10px;
+  left: 10px;
+}
+
+.input-container.focus span.span-fnac {
+  opacity: 0;
+}
+
+/*simulacion del evento focus con una clase para editar datos en los inputs    */
+
+.input-container.edit-focus label {
+  top: 0;
+  transform: translateY(-50%);
+  left: 20px;
+  font-size: 0.9rem;
+  color: rgb(6, 94, 94);
+  font-weight: bold;
+}
+
+.input-container.edit-focus span:before,
+.input-container.edit-focus span:after {
+  width: 50%;
+  opacity: 1;
+}
+
+.input-container.edit-focus span.span-fnac {
+  opacity: 0;
+}
+
+/*fin de simulacion del evento focus */
+
+/* fin de input custom */
+
+p {
+  display: inline-block;
+  margin: 0 5px 3px 0;
+  font-weight: bold;
+  color: #265a6e;
+  width: fit-content;
+}
+
+.margin-span {
+  margin-left: 22px;
+}
+
+label.check.no-margin {
+  margin: 7px 0px;
+}
+
+.flexor {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+}
+
+.input.myWidth {
+  width: 140px;
+  height: 25px;
+  padding: 2px 10px;
+}
+
+h6 {
+  display: inline-block;
+  padding: 0 10px 0 0;
+  color: #265a6e;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.question .question-answer span:hover {
+  color: orangered;
+}
+
+.btn-block {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.fechacontrolasistencia {
+  padding: 5px;
+  border: 1px solid #28bbac;
+  border-radius: 5px;
+  font-size: 20px;
+  color: #265a6e;
+  margin-bottom: 15px;
+}
+
+/* reingenieria hasta aqui */
+
+select {
+  width: 200px;
+  padding: 5px 0;
+  border-radius: 5px;
+  border: 1px solid rgb(6, 173, 173);
+  margin: 0 5px 20px 0;
+  background-color: rgb(250, 246, 246);
+}
+
+textarea {
+  width: calc(100% - 32px);
+  padding: 5px 20px 5px 10px;
+  position: relative;
+  background-color: rgb(250, 246, 246);
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border: 1px solid orangered;
+}
+
+input[type='radio'],
+input[type='checkbox'] {
+  display: none;
+}
+
+label.radio,
+label.check {
+  position: relative;
+  display: inline-block;
+  margin: 5px;
+  cursor: pointer;
+}
+
+label.radio:before,
+label.check:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 1px;
+}
+
+label.radio:before {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1px solid #266992;
+}
+
+label.check:before {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  border: 1px solid #095484;
+}
+
+input[type='checkbox']:checked + .check:before {
+  background: orangered;
+}
+
+label.radio:after {
+  left: 5px;
+  border: 3px solid orangered;
+}
+
+label.check:after {
+  left: 4px;
+  border: 3px solid #fff;
+}
+
+label.radio:after,
+label.check:after {
+  content: '';
+  position: absolute;
+  /*top: 2px;*/
+  width: 8px;
+  height: 4px;
+  background: transparent;
+  border-top: none;
+  border-right: none;
+  transform: rotate(-45deg);
+  opacity: 0;
+}
+
+label.radio > span,
+label.check > span {
+  margin-left: 22px;
+}
+
+input[type='radio']:checked + label:after,
+input[type='checkbox']:checked + label:after {
+  opacity: 1;
+}
+
+/*SLIDER de Control de Asistencias  */
+
+.img-slider {
+  position: relative;
+  width: 70%;
+  height: 80vh;
+  margin: 0px auto 10px auto;
+}
+
+.img-slider .slide {
+  z-index: 1;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  clip-path: circle(0% at 0 50%);
+}
+
+.img-slider .slide.active {
+  clip-path: circle(150% at 0 50%);
+  transition: 1.5s;
+  transition-property: clip-path;
+}
+
+.img-slider .slide .info {
+  position: absolute;
+  padding: 0px 30px 10px 30px;
+  border: 1px teal solid;
+}
+
+.img-slider .navigation {
+  z-index: 2;
+  position: absolute;
+  display: flex;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+}
+
+.img-slider .navigation .btn {
+  background: black;
+  width: 16px;
+  height: 16px;
+  margin: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.img-slider .navigation .btn.active {
+  background: #116eb6;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+/*FIN DEL SLIDER de Control de Asistencias  */
+
+.flexor > button:hover {
+  background-color: #28bbac;
+}
+
+.cambiodia,
+.montopagado,
+.montopagadobs,
+.referenciapago {
+  text-align: center;
+}
+
+.menu-control {
+  display: flex;
+  justify-content: center;
+  bottom: 15px;
+}
+
+.btn-menu-control {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  outline: none;
+  border: 2px solid black;
+  background-color: bisque;
+  pointer-events: all;
+  cursor: pointer;
+  z-index: 9;
+  right: 0;
+  margin: 5px;
+}
+
+.btn-menu-control:hover {
+  background-color: #28bbac;
+}
+
+.btn-menu-control > img {
+  pointer-events: none;
+}
+
+.hidden {
+  display: none;
+}
+
+/*==========================
+  MY CUSTOM TOOLTIPS 
+============================*/
+.t-tip {
+  position: relative;
+}
+.t-tip:before {
+  position: absolute;
+  z-index: 99;
+  display: none;
+  padding: 0.3rem 0.6rem;
+  font-size: 12px;
+  min-width: fit-content;
+  max-width: 100%;
+  border-radius: 0.3rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 0.9;
+  color: white;
+  content: attr(tip);
+  text-align: center;
+}
+.t-tip:after {
+  position: absolute;
+  z-index: 1;
+  display: none;
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  content: '';
+}
+.t-tip:hover:before,
+.t-tip:hover:after {
+  display: inline-block;
+}
+
+.t-tip.top:before {
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.t-tip.top:after {
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-width: 0;
+  border-top-color: rgba(0, 0, 0, 0.8);
+}
+
+.t-tip.bottom:before {
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.t-tip.bottom:after {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top-width: 0;
+  border-bottom-color: rgba(0, 0, 0, 0.8);
+}
+
+.t-tip.left:before {
+  top: 50%;
+  right: calc(100% + 10px);
+  transform: translateY(-50%);
+}
+.t-tip.left:after {
+  top: 50%;
+  right: calc(100% + 5px);
+  transform: translateY(-50%);
+  border-right-width: 0;
+  border-left-color: rgba(0, 0, 0, 0.8);
+}
+
+/*left para mover el cuadro de contenido */
+.t-tip.right:before {
+  top: 50%;
+  left: calc(100% + 10px);
+  transform: translateY(-50%);
+}
+/*left para mover la flecha */
+.t-tip.right:after {
+  top: 50%;
+  left: calc(100% + 5px);
+  transform: translateY(-50%);
+  border-left-width: 0;
+  border-right-color: rgba(0, 0, 0, 0.8);
+}
+
+#paciente {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 12px;
+  color: white;
+  font-weight: bold;
+  background-color: #069ab1;
+  padding: 5px 10px;
+  z-index: 9999;
+}
+
+button.volver.control {
+  height: 25px;
+  border-radius: 0px;
+  background-color: #069ab1;
+  color: white;
+  font-weight: bold;
+  border: none;
+  font-size: 12px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 5px;
+}
+
+/********* MEDIA QUERIES **********************/
+@media (max-width: 760px) {
+  .inputs-collection {
+    justify-content: space-evenly;
+  }
+
+  .input-container {
+    width: 50%;
+  }
+
+  .input,
+  .input-container.pagos > input {
+    width: 85%;
+  }
+
+  select:not(.selector-conceptos) {
+    width: 30%;
+  }
+
+  .historia-container {
+    width: 95%;
+  }
+
+  .fechacontrolasistencia {
+    font-size: 1rem;
+  }
+
+  h3,
+  h6 {
+    font-size: 1rem;
+  }
+
+  .input-container label.label-fnac {
+    top: 0;
+    left: 0;
+    transform: translateX(14px);
+  }
+
+  label.check.head {
+    width: 315px;
+  }
+
+  label.check.head > span {
+    width: 100%;
+  }
+
+  label.radio,
+  label.check {
+    margin: 5px 5px 10px 0;
+  }
+  .flexor {
+    align-items: baseline;
+    justify-content: center;
+    margin-top: 15px;
+  }
+  /* MEDIA QUERIES DEL SLIDER CONTROL DE ASISTENCIAS*/
+  .img-slider {
+    width: 95%;
+    height: 510px;
+  }
+
+  .img-slider .slide {
+    height: auto;
+  }
+
+  .img-slider .slide .info {
+    padding: 10px;
+    position: static;
+  }
+
+  .img-slider .navigation {
+    bottom: -35px;
+  }
+  .menu-control {
+    bottom: -10px;
+  }
+
+  textarea {
+    height: 4em;
+  }
+
+  h1,
+  h5 {
+    font-size: 1.5rem;
+  }
+  .historia-container.agregar {
+    position: relative;
+    width: 96%;
+  }
+
+  .historia-container.agregar > form {
+    padding: 10px;
+  }
+  .fechacontrolasistencia.control {
+    margin-top: 30px;
+  }
+}
+
+/*FIN MEDIA QUERIES FEBB */
