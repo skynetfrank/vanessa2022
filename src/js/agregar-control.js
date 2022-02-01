@@ -77,7 +77,6 @@ inputFormapago.addEventListener('change', e => {
   }
 });
 
-
 historia.addEventListener('submit', async e => {
   e.preventDefault();
 
@@ -88,23 +87,23 @@ historia.addEventListener('submit', async e => {
   const banco = historia['select-banco'].value;
   const tipopago = historia['tipo-pago'].value;
   const referenciapago = historia['referenciapago'].value;
-  const montopagado = parseInt(historia['montopagado'].value).toFixed(2);
-  const montopagadobs = parseInt(historia['montopagadobs'].value).toFixed(2);
-  const cambiodia = parseInt(historia['cambiodia'].value).toFixed(2);
+  const montopagado = parseFloat(historia['montopagado'].value).toFixed(2);
+  const montopagadobs = parseFloat(historia['montopagadobs'].value).toFixed(2);
+  const cambiodia = parseFloat(historia['cambiodia'].value).toFixed(2);
   //Crear Objeto para enviar a firebase con todos los campos
 
   const controlAsistencia = {
     idPaciente: idPacienteLocal,
     fecha: fechacontrolasistencia,
-    esCita1: true,
+    esCita1: false,
     evaluaciongeneral: evaluaciongeneral,
-    tratamientoaplicado: tratamientoaplicado,
-    formadepago: formadepago,
+    tratamientoAplicado: tratamientoaplicado,
+    pago: formadepago,
     tipopago: tipopago,
     banco: banco,
     montoBs: montopagadobs,
     referencia: referenciapago,
-    montoUsd: montopagado,
+    monto: montopagado,
     cambiodia: cambiodia,
     createdAt: serverTimestamp(),
   };

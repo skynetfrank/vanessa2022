@@ -10,7 +10,7 @@ var btns;
 var inputs;
 var navigation = document.querySelector('.navigation');
 const controlesRef = collection(db, 'controlasistencias');
-const myQuery = query(controlesRef, where('idPaciente', '==', idPacienteLocal), where('esCita1', '==', true));
+const myQuery = query(controlesRef, where('idPaciente', '==', idPacienteLocal));
 const btnAgregar = document.getElementById('btn-agregar');
 const btnEditar = document.getElementById('btn-editar');
 const btnEliminar = document.getElementById('btn-eliminar');
@@ -35,7 +35,6 @@ btnAgregar.addEventListener('click', () => {
 });
 
 btnEliminar.addEventListener('click', () => {
-  console.log('Eliminar el control actual:', controlActivo);
   deleteAsistencia(controlActivo);
 });
 
@@ -48,6 +47,7 @@ function getControl() {
   getDocs(myQuery).then(res => {
     res.forEach(doc => {
       const myData = doc.data();
+      console.log('Controles obtenidos para llenar slide:', myData);
       const idControl = doc.id;
       addSlide(myData, idControl);
     });
@@ -75,7 +75,12 @@ function addSlide(datos, id) {
   var itemTextArea2 = document.createElement('div');
 
   var h61 = document.createElement('h6');
-  var h61Content = document.createTextNode('Evaluacion General');
+  if (datos.esCita1) {
+    var h61Content = document.createTextNode('Evaluacion General (1ra. Cita)');
+  } else {
+    var h61Content = document.createTextNode('Evaluacion General');
+  }
+
   var h62 = document.createElement('h6');
   var h62Content = document.createTextNode('Tratamiento Aplicado');
   h61.appendChild(h61Content);
@@ -85,7 +90,7 @@ function addSlide(datos, id) {
   var textTratamiento = document.createElement('textarea');
 
   textEvaluacion.value = datos.evaluaciongeneral;
-  textTratamiento.value = datos.tratamientoaplicado;
+  textTratamiento.value = datos.tratamientoAplicado;
 
   var selectEval = document.createElement('select');
   selectEval.classList.add('selector-conceptos');
@@ -194,6 +199,7 @@ function addSlide(datos, id) {
   infoDiv.appendChild(flexorDiv).classList.add('flexor');
   infoDiv.appendChild(controlDiv).classList.add('div-control-asistencia');
   inputFecha.setAttribute('type', 'date');
+  inputFecha.setAttribute('disabled', 'disabled');
   inputFecha.classList.add('fechacontrolasistencia');
   inputFecha.classList.add('control');
   inputFecha.value = datos.fecha;
@@ -248,7 +254,7 @@ function addSlide(datos, id) {
   selectFormaPago.add(fpopcion4);
   selectFormaPago.add(fpopcion5);
 
-  selectFormaPago.value = datos.formadepago;
+  selectFormaPago.value = datos.pago;
 
   var selectBanco = document.createElement('select');
   selectBanco.classList.add('select-banco');
@@ -368,7 +374,7 @@ function addSlide(datos, id) {
   var input2 = document.createElement('input');
   input2.classList.add('input');
   input2.classList.add('montopagado');
-  input2.value = datos.montoUsd;
+  input2.value = datos.monto;
   input2.setAttribute('disabled', 'disabled');
 
   var labelcontent2 = document.createTextNode('Monto US$');

@@ -3,6 +3,7 @@ import {
   addDoc,
   doc,
   getDoc,
+  getDocs,
   query,
   deleteDoc,
   where,
@@ -47,6 +48,8 @@ const mySpinner = document.querySelector('.myspinner-container');
 const allSections = document.querySelectorAll('section');
 const btnExcel = document.getElementById('btn-excel');
 const consulta = query(collection(db, 'pacientes'), orderBy('nombre', 'asc'));
+const fechaCorte = new Date(2021, 11, 31);
+
 var usuariosWeb = [];
 
 const populateTabla = () => {
@@ -230,7 +233,7 @@ formSesion.addEventListener('submit', e => {
   signInWithEmailAndPassword(auth, email, pw)
     .then(cred => {
       const admin = cred.user.email;
-      if (admin != 'admin@demo.com') {
+      if (admin != 'rony@gmail.com') {
         logout.click();
         alert('Acceso denegado... Ud. no es Administrador');
       }
@@ -548,20 +551,26 @@ function setInViewClass() {
 //DASHBOARD CODE ****************************
 
 function getDatos() {
+  const consultaIngresos = query(collection(db, 'controlasistencias'));
   onSnapshot(collection(db, 'citas'), snapshot => {
     snapshot.forEach(doc => {
       cardCitas.innerHTML = snapshot.docs.length;
     });
   });
 
-  onSnapshot(collection(db, 'controlasistencias'), snapshot => {
+  onSnapshot(consultaIngresos, snapshot => {
     let ingresos = 0;
     snapshot.forEach(doc => {
+      const fControl = Date.parse(doc.data().fecha);
+      const fCorte = Date.parse('2021-12-31');
+
       let montoDolares = 0;
 
       if (!isNaN(doc.data().monto)) {
-        console.log('montoUsd:', Number(doc.data().monto));
-        montoDolares = parseInt(Number(doc.data().monto));
+        fControl > fCorte ? (montoDolares = parseInt(Number(doc.data().monto))) : (montoDolares = 0);
+        fControl > fCorte
+          ? console.log('fecha control es mayor', doc.data().fecha, fControl, 'fecha corte', fCorte, doc.data().monto)
+          : '';
       }
       cardActividad.innerHTML = snapshot.docs.length;
       ingresos += montoDolares;
@@ -632,12 +641,20 @@ function deletePaciente(id) {
   const eliminar = confirm('Esta Seguro que quiere Eliminar este Paciente?');
   if (eliminar) {
     const docRef = doc(db, 'pacientes', id);
-    deleteDoc(docRef)
-      .then(result => {
-        alert('Registro Eliminado');
-      })
-      .catch(error => {
-        alert('Error: ', error.message);
+    const queryControles = query(collection(db, 'controlasistencias'), where('idPaciente', '==', id));
+    deleteDoc(docRef);
+    //delete controles asociados al paciente
+    getDocs(queryControles).then(res => {
+      res.forEach(doc => {
+        deleteControl(doc.id);
       });
+    });
   }
+}
+
+function deleteControl(id) {
+  const ctrlRef = doc(db, 'controlasistencias', id);
+  deleteDoc(ctrlRef).then(result => {
+    alert('Paciente y Controles asociados Eliminados!');
+  });
 }

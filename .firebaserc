@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "dental-project-def14"
+  },
+  "targets": {
+    "dental-project-def14": {
+      "hosting": {
+        "adminpage": [
+          "vanessa-admin-site"
+        ]
+      }
+    }
+  }
+}

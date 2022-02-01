@@ -17,11 +17,6 @@ const inputFormapago = document.getElementById('formadepago');
 
 document.getElementById('paciente').innerText = nombrePaciente + ' ' + apellidoPaciente;
 
-function formatearFecha(nfecha) {
-  var info = nfecha.split('-').reverse().join('/');
-  return info;
-}
-
 const eventoFocus = new FocusEvent('focus', {
   view: window,
   bubbles: true,
@@ -85,16 +80,16 @@ window.addEventListener('DOMContentLoaded', () => {
   const controlRef = doc(db, 'controlasistencias', idControlLocal);
   getDoc(controlRef).then(doc => {
     const data = doc.data();
-    console.log('data a editar', data);
+    console.log('data a editar', doc.id, data);
     document.querySelector('.fechacontrolasistencia').value = data.fecha;
     document.getElementById('evaluaciongeneral').value = data.evaluaciongeneral;
-    document.getElementById('tratamientoaplicado').value = data.tratamientoaplicado;
+    document.getElementById('tratamientoaplicado').value = data.tratamientoAplicado;
 
-    document.getElementById('formadepago').value = data.formadepago;
+    document.getElementById('formadepago').value = data.pago;
     document.getElementById('select-banco').value = data.banco;
     document.getElementById('tipo-pago').value = data.tipopago;
     document.getElementById('referenciapago').value = data.referencia;
-    document.getElementById('montopagado').value = data.montoUsd;
+    document.getElementById('montopagado').value = data.monto;
     document.getElementById('cambiodia').value = data.cambiodia;
     document.getElementById('montopagadobs').value = data.montoBs;
   });
@@ -112,22 +107,21 @@ historia.addEventListener('submit', e => {
   const banco = historia['select-banco'].value;
   const tipopago = historia['tipo-pago'].value;
   const referenciapago = historia['referenciapago'].value;
-  const montopagado = historia['montopagado'].value;
-  const montopagadobs = historia['montopagadobs'].value;
-  const cambiodia = historia['cambiodia'].value;
+  const montopagado = parseFloat(historia['montopagado'].value).toFixed(2);
+  const montopagadobs = parseFloat(historia['montopagadobs'].value).toFixed(2);
+  const cambiodia = parseFloat(historia['cambiodia'].value).toFixed(2);
   //Crear Objeto para enviar a firebase con todos los campos
 
   const controlAsistencia = {
     fecha: fechacontrolasistencia,
-    esCita1: true,
     evaluaciongeneral: evaluaciongeneral,
-    tratamientoaplicado: tratamientoaplicado,
-    formadepago: formadepago,
+    tratamientoAplicado: tratamientoaplicado,
+    pago: formadepago,
     tipopago: tipopago,
     banco: banco,
     montoBs: montopagadobs,
     referencia: referenciapago,
-    montoUsd: montopagado,
+    monto: montopagado,
     cambiodia: cambiodia,
     createdAt: serverTimestamp(),
   };

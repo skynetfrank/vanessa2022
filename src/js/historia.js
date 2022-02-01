@@ -41,6 +41,8 @@ function dolarToday() {
     })
     .catch(err => {
       alert('Dolar-Today No esta disponible, ingrese el cambio de forma manual');
+      inputCambio.dispatchEvent(eventoFocus);
+      inputBolivares.dispatchEvent(eventoFocus);
       historia['cambiodia'].value = 0;
       historia['montopagadobs'].value = (parseFloat(cambio) * parseFloat(dolares)).toFixed(2);
     });
@@ -160,8 +162,10 @@ inputFormapago.addEventListener('change', e => {
   document.getElementById('referenciapago').dispatchEvent(eventoFocus);
   if (inputFormapago.value == 'Efectivo') {
     document.getElementById('referenciapago').value = 'cash$';
+    document.getElementById('select-banco').value = 'Otro';
   } else {
     document.getElementById('referenciapago').value = '';
+    document.getElementById('select-banco').value = '';
   }
 });
 
@@ -181,7 +185,6 @@ historia.addEventListener('submit', async e => {
   const contacto = historia['contacto'].value;
   const estatura = historia['estatura'].value;
   const peso = historia['peso'].value;
-
   const tratadopormedico = document.querySelector('input[name="checktratadopormedico"]:checked').value;
   const tratadoporenfermedad = historia['tratadoporenfermedad'].value;
   const checktomamedicamento = document.querySelector('input[name="checktomamedicamento"]:checked').value;
@@ -224,9 +227,9 @@ historia.addEventListener('submit', async e => {
   const banco = historia['select-banco'].value;
   const tipopago = historia['tipo-pago'].value;
   const referenciapago = historia['referenciapago'].value;
-  const montopagado = parseInt(historia['montopagado'].value).toFixed(2);
-  const montopagadobs = parseInt(historia['montopagadobs'].value).toFixed(2);
-  const cambiodia = parseInt(historia['cambiodia'].value).toFixed(2);
+  const montopagado = parseFloat(historia['montopagado'].value).toFixed(2);
+  const montopagadobs = parseFloat(historia['montopagadobs'].value).toFixed(2);
+  const cambiodia = parseFloat(historia['cambiodia'].value).toFixed(2);
   //Crear Objeto para enviar a firebase con todos los campos
 
   const historiaPaciente = {

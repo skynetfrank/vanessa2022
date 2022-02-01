@@ -137,8 +137,10 @@ inputFormapago.addEventListener('change', e => {
   document.getElementById('referenciapago').dispatchEvent(eventoFocus);
   if (inputFormapago.value == 'Efectivo') {
     document.getElementById('referenciapago').value = 'cash$';
+    document.getElementById('select-banco').value = 'Otro';
   } else {
     document.getElementById('referenciapago').value = '';
+    document.getElementById('select-banco').value = '';
   }
 });
 
