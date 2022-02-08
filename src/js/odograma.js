@@ -1,4 +1,4 @@
-import historias from '../css/odograma.css';
+import '../css/odograma.css';
 import { cloudstorage } from '../js/firebaseconfig';
 import { ref, getDownloadURL, uploadString } from 'firebase/storage';
 import { dateToAMD, strToDMA } from '../commons/utilities';
@@ -128,7 +128,7 @@ function guardarStorage(link, canvas, filename) {
     .then(result => {
       setTimeout(() => {
         mySpinner.style.display = 'none';
-      }, 2000);
+      }, 1000);
     })
     .catch(error => {
       mySpinner.style.display = 'none';
@@ -632,5 +632,5 @@ function btnActivo(id) {
 }
 
 btnCerrar.addEventListener('click', () => {
-  window.history.back();
+  window.close();
 });

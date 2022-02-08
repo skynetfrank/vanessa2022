@@ -14,16 +14,11 @@
 <body>
   <div id="floating-images">
     <img src="images/odograma-icon.png" alt="odograma">
-    <img src="images/control-asist-icon.png" alt="control">
-    <img src="images/edit-icon.png" alt="edit">
-    <img src="images/delete-icon.png" alt="delete">
-    <img src="images/paciente-info-icon.png" alt="info">
     <img src="images/odograma1.jpg" alt="odograma">
-    <img src="images/mask-icon24.png" alt="odograma">
     <img src="images/clock-icon.png" alt="clock">
   </div>
   <div class="myspinner-container">
-    <div class="myspinner-text" data-spintext="Guardando! Espere.."></div>
+    <div class="myspinner-text" data-spintext="Cargando Pacientes!"></div>
     <div class="myspinner-sector myspinner-sector-red"></div>
     <div class="myspinner-sector myspinner-sector-blue"></div>
     <div class="myspinner-sector myspinner-sector-green"></div>
@@ -68,28 +63,32 @@
       <div id="buscador">
         <div class="search__div">
           <input class="search__input" type="text" name="" placeholder="Buscar">
-          <span class="icono"><img class="img-search" src="images/search-icon.png" alt=""></i></span>
+          <ion-icon name="search" class="lupa"></ion-icon>
         </div>
-        <a class="btn-add-paciente t-tip right" tip="Agregar Paciente" href="historia.html">
-          <img class="img-add-paciente" src="images/add-paciente-icon.png" alt=""></a>
-        <button class="btn-add-paciente t-tip right" id="btn-excel" tip="Descarga Tabla Excel">
+        <a class="btn-add-paciente t-tip right" tip="Agregar Paciente" href="#">
+          <ion-icon name="person-add" class="person-add"></ion-icon>
+        </a>
+        <button class="t-tip right" id="btn-excel" tip="Descarga Tabla Excel">
           <span class="img-btn"><img src="images/excel-icon.png" alt="excel"> </span>
         </button>
       </div>
-      <table class="table highlight" id="tabla-paciente">
-        <thead>
-          <tr>
-            <th id="th-id-hidden">id</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Edad</th>
-            <th>Tel&eacutefono</th>
-            <th>Accion</th>
-          </tr>
-        </thead>
-        <tbody id="pacientes-tbody">
-        </tbody>
-      </table>
+      <div class="scroll-container">
+        <table class="table highlight" id="tabla-paciente">
+          <thead>
+            <tr>
+              <th id="th-id-hidden">id</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Edad</th>
+              <th>Tel&eacutefono</th>
+              <th>Accion</th>
+            </tr>
+          </thead>
+          <tbody id="pacientes-tbody">
+          </tbody>
+        </table>
+      </div>
+      <div class="loading">cargando pacientes...</div>
     </div>
     <div class="info-container">
       <button class="volver-info">volver</a></button>
@@ -340,6 +339,7 @@
   </div>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@linways/table-to-excel@1.0.4/dist/tableToExcel.min.js"></script>
 </body>
 
 </html>

@@ -2,10 +2,6 @@
 
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600');
 
-html {
-  scroll-behavior: smooth;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -24,6 +20,120 @@ body {
 
 #floating-images {
   display: none;
+}
+
+section {
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 70px;
+}
+
+#seccion__dashboard {
+  display: none;
+}
+
+#seccion__inicio {
+  background: url('../images/inicio.jpg') no-repeat top center;
+  background-size: 100% 100%;
+  z-index: 9999999;
+}
+
+.scroll-container {
+  width: 95%;
+  height: 400px;
+  overflow: auto;
+}
+
+.loading {
+  display: none;
+}
+
+.loading.active {
+  display: block;
+  font-size: 1rem;
+  text-align: center;
+  margin: 10px 0;
+  color: #9132bd;
+  font-weight: bold;
+}
+.load-more {
+  display: none;
+}
+
+#tabla-paciente thead tr {
+  position: sticky;
+  top: 0px;
+  z-index: 9;
+}
+#usuario {
+  position: relative;
+  top: -30px;
+  font-size: 1rem;
+  max-width: 100px;
+  color: blanchedalmond;
+}
+
+#sesion {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  top: 200px;
+  justify-content: center;
+}
+
+#form-sesion a {
+  font-size: 10px;
+  color: rgb(207, 206, 204);
+}
+
+.version {
+  font-size: 10px;
+  color: rgb(207, 206, 204);
+  margin-top: 10px;
+}
+
+.login__container {
+  position: relative;
+  max-width: 300px;
+  width: 100%;
+  max-height: 300px;
+  height: 100%;
+  background: #9132bd;
+  padding: 30px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+}
+
+.login__container .title {
+  text-align: center;
+  position: relative;
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 35px;
+}
+
+.btn {
+  display: block;
+  padding: 0.6rem 1.3rem;
+  background-color: #fff;
+  border: 2px solid #fafafa;
+  font-size: 1rem;
+  font-weight: bolder;
+  color: #0361df;
+  line-height: 1;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 20px 0px;
+}
+
+.btn:hover {
+  color: orangered;
+}
+
+.img-logout {
+  cursor: pointer;
+  pointer-events: all;
 }
 
 /* Efectos 2022 */
@@ -191,40 +301,43 @@ body {
   align-items: center;
   width: 150px;
   height: 150px;
+  border-radius: 50%;
+  background-color: white;
   top: 200px;
+  left: calc(100% / 2 - 150px / 2);
   display: none;
-  z-index: 999;
+  z-index: 9;
 }
 
 .myspinner-sector {
   border-radius: 50%;
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 110%;
+  height: 110%;
   border: 15px solid transparent;
-  border-top: 15px solid green;
+  border-top: 15px solid teal;
   mix-blend-mode: overlay;
 }
 
 .myspinner-text {
-  font-size: 1.5em;
+  font-size: 1rem;
   text-align: center;
 }
 
 .myspinner-text::before {
-  color: darkred;
+  color: brown;
   font-weight: 800;
   content: attr(data-spintext);
 }
 
 .myspinner-sector-blue {
   animation: myRotate 1s ease-out infinite;
-  border-top: 15px solid #2d972e;
+  border-top: 15px solid #c395d8;
 }
 
 .myspinner-sector-red {
   animation: myRotate 1.5s ease-in infinite;
-  border-top: 15px solid #ffa705;
+  border-top: 15px solid aqua;
 }
 
 .myspinner-sector-green {
@@ -317,94 +430,6 @@ nav #hamburguesa {
 
 /*-------- FIN NAV BAR -------------*/
 
-section {
-  width: 100%;
-  min-height: 100vh;
-  padding-top: 70px;
-}
-
-#seccion__dashboard {
-  display: none;
-}
-
-#seccion__inicio {
-  background: url('../images/inicio.jpg') no-repeat top center;
-  background-size: 100% 100%;
-}
-
-#usuario {
-  position: relative;
-  top: -30px;
-  font-size: 1rem;
-  max-width: 100px;
-  color: blanchedalmond;
-}
-
-#sesion {
-  position: absolute;
-  width: 100%;
-  display: flex;
-  top: 200px;
-  justify-content: center;
-}
-
-#form-sesion a {
-  font-size: 10px;
-  color: rgb(207, 206, 204);
-}
-
-.version {
-  font-size: 10px;
-  color: rgb(207, 206, 204);
-  margin-top: 10px;
-}
-
-.login__container {
-  position: relative;
-  max-width: 300px;
-  width: 100%;
-  max-height: 300px;
-  height: 100%;
-  background: #9132bd;
-  padding: 30px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 15px;
-}
-
-.login__container .title {
-  text-align: center;
-  position: relative;
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 35px;
-}
-
-.btn {
-  display: block;
-  padding: 0.6rem 1.3rem;
-  background-color: #fff;
-  border: 2px solid #fafafa;
-  font-size: 1rem;
-  font-weight: bolder;
-  color: #0361df;
-  line-height: 1;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: 0.3s;
-  margin: 20px 0px;
-}
-
-.btn:hover {
-  color: orangered;
-}
-
-.img-logout {
-  cursor: pointer;
-  pointer-events: all;
-}
-
-/*------MEDIA QUERIES -------*/
-
 /* TABLA RESPONSIVE PACIENTES */
 
 .tabla-container {
@@ -453,6 +478,9 @@ table.vhighlight > tbody > tr > td:hover {
   position: relative;
   padding-bottom: 20px;
 }
+#pacientes-tbody tr td:nth-child(6) {
+  width: 150px;
+}
 
 button.volver-info {
   position: absolute;
@@ -487,9 +515,9 @@ button.volver-info {
   border-radius: 20px;
   transition: all ease 0.5s;
   overflow: hidden;
-  border: 2px solid #0457c3;
   margin-bottom: 5px;
   margin-right: 10px;
+  display: none;
 }
 
 .search__input {
@@ -504,6 +532,7 @@ button.volver-info {
   pointer-events: all;
   margin: 0;
   line-height: 40px;
+  padding-left: 10px;
 }
 
 .search__div:hover > .search__input {
@@ -515,43 +544,26 @@ button.volver-info {
   background-color: #0361df;
 }
 
-.img-search {
-  position: absolute;
-  cursor: pointer;
-  top: 2px;
-  right: 2px;
-  padding: 5px;
-}
-
 .search__input::placeholder {
   color: rgb(167, 164, 164);
   font-size: 1rem;
 }
 
-.btn-add-paciente {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid #0457c3;
-  margin-right: 10px;
-}
-
-.btn-add-paciente > img {
-  padding: 5px;
-  pointer-events: all;
-  cursor: pointer;
-}
-
 .td-btn {
-  position: relative;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid #0457c3;
-  background-color: bisque;
   pointer-events: all;
   cursor: pointer;
   margin-left: 10px;
+}
+
+.td-btn.info {
+  top: 10px;
+}
+
+.td-btn.odo {
+  top: -5px;
 }
 
 .td-btn.offset {
@@ -574,6 +586,39 @@ button.volver-info {
   pointer-events: none;
 }
 
+/* IONICS */
+
+.person-add {
+  font-size: 42px;
+  color: #631488;
+  margin-right: 15px;
+}
+
+#btn-excel {
+  border: none;
+}
+
+.lupa {
+  font-size: 32px;
+  color: #631488;
+  font-weight: bold;
+  position: absolute;
+  cursor: pointer;
+  top: 0px;
+  right: 2px;
+  padding: 5px;
+}
+
+.btn-menu-table {
+  font-size: 32px;
+  color: #631488;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.btn-menu-table.info {
+  font-size: 44px;
+}
 /* FIN DE INPUT SEARCH CUSTOM DE FEBB   */
 
 /*==========================
@@ -588,7 +633,7 @@ button.volver-info {
   display: none;
   padding: 0.3rem;
   font-size: 12px;
-  min-width: 80px;
+  min-width: 90px;
   max-width: fit-content;
   border-radius: 0.3rem;
   background-color: rgba(0, 0, 0, 0.8);
@@ -695,7 +740,7 @@ table.info {
   font-size: 20px;
   font-weight: bold;
   padding: 10px 0;
-  background-color: orange;
+  background-color: #9132bd;
 }
 
 .table.info td {
@@ -1289,6 +1334,19 @@ td {
 }
 
 @media (max-width: 760px) {
+  .scroll-container {
+    width: 100%;
+    height: 600px;
+    overflow: auto;
+  }
+
+  #tabla-paciente thead tr {
+    position: static;
+  }
+  #pacientes-tbody tr td:nth-child(6) {
+    width: 100%;
+  }
+
   nav #hamburguesa {
     display: block;
   }
@@ -1353,7 +1411,7 @@ td {
     text-align: center;
     font-size: 25px;
     color: black;
-    background-color: orange;
+    background-color: #9132bd;
     font-weight: bold;
     padding-top: 8px;
   }

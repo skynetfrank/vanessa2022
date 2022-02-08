@@ -438,7 +438,7 @@ historia.addEventListener('submit', e => {
     updateDoc(updateControlRef, controlAsistencia).then(res => {
       historia.reset();
       alert('Informacion Actualizada con exito!');
-      window.history.back();
+      window.close();
     });
   }
 
@@ -451,7 +451,7 @@ historia.addEventListener('submit', e => {
 
 btnCerrar.addEventListener('click', e => {
   e.preventDefault();
-  window.history.back();
+  window.close();
 });
 
 //codigo para los custom inputs de la seccion contacto

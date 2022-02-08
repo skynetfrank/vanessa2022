@@ -5,6 +5,8 @@ import {
   getDoc,
   getDocs,
   query,
+  limit,
+  startAfter,
   deleteDoc,
   where,
   onSnapshot,
@@ -13,12 +15,13 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { onAuthStateChanged, signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from 'firebase/auth';
-import TableToExcel from '@linways/table-to-excel';
 import { dateToAMD, strToDMA } from './commons/utilities';
 
 import './css/index.css';
 
 const hamburguesa = document.getElementById('hamburguesa');
+const mySpinner = document.querySelector('.myspinner-container');
+const mySpinnerText = document.querySelector('.myspinner-container > .myspinner-text');
 const barraMenu = document.getElementById('barra__menu');
 const menu = document.querySelectorAll('nav ul li');
 const menuLinks = document.querySelectorAll('nav ul li a');
@@ -44,159 +47,58 @@ const cardIngresos = document.getElementById('total-ingresos');
 const cardActividad = document.getElementById('total-procedimientos');
 const cardPacientes = document.getElementById('total-pacientes');
 const cardCitas = document.getElementById('total-citas');
-const mySpinner = document.querySelector('.myspinner-container');
 const allSections = document.querySelectorAll('section');
 const btnExcel = document.getElementById('btn-excel');
-const consulta = query(collection(db, 'pacientes'), orderBy('nombre', 'asc'));
-const fechaCorte = new Date(2021, 11, 31);
+const btnAddPaciente = document.querySelector('.btn-add-paciente');
+const pacientesTbody = document.getElementById('pacientes-tbody');
+const scrollContainer = document.querySelector('.scroll-container');
+const loading = document.querySelector('.loading');
+const buscadorContainer = document.querySelector('.search__div');
+const tablaPacientes = document.getElementById('tabla-paciente');
+let latestDoc = null;
 
 var usuariosWeb = [];
 
-const populateTabla = () => {
-  const pacientesData = onSnapshot(consulta, snapshot => {
-    let pacientesTbody = document.getElementById('pacientes-tbody');
-    let dashboardTbody = document.getElementById('dash-pacientes-tbody');
-    let excelTbody = document.getElementById('excel-body');
-    pacientesTbody.innerHTML = '';
-    dashboardTbody.innerHTML = '';
-    excelTbody.innerHTML = '';
-    cardPacientes.innerHTML = snapshot.docs.length;
+btnAddPaciente.addEventListener('click', () => {
+  window.open('historia.html');
+});
 
-    snapshot.forEach(doc => {
-      let data = doc.data();
-      // **************************TABLA SECTION PACIENTES **************************************
-      let prow = `<tr> 
-                        <td id="td-titulo">Paciente</td>   
-                        <td id="td-id-hidden">${doc.id}</td>                          
-                        <td data-label="Nombre">${data.nombre}</td>
-                        <td data-label="Apellido">${data.apellido}</td>
-                        <td data-label="Edad">${data.edad}</td>
-                        <td data-label="Telefono">${data.celular}</td>
-                        <td data-label="" class="ver-paciente">  
-                           <button class="td-btn t-tip top" id="btn-info-paciente" tip="Ver Historia" data-id=${doc.id}  data-nom=${data.nombre} data-ape=${data.apellido}>
-                             <span class="img-btn"><img src="images/6723388c86c0ed2b02e0.png" alt="control"</span>
-                           </button> 
-                           <button  class="td-btn t-tip top" id="btn-ver-paciente" tip="Editar Historia" data-id=${doc.id}  data-nom=${data.nombre} data-ape=${data.apellido}>
-                             <span class="img-btn"><img src="images/26790e10b578c609f86f.png" alt="control"</span>
-                           </button>        
-                           <button class="td-btn t-tip top" id="btn-control-paciente" tip="Control de Asistencia" data-id=${doc.id}  data-nom=${data.nombre} data-ape=${data.apellido}>
-                             <span class="img-btn"><img src="images/051ef99d37ac35349b05.png" alt="control"</span>
-                           </button>                       
-                           <button  class="td-btn t-tip top" id="btn-odograma" tip="Ver/Editar Odograma" data-id=${doc.id}  data-nom=${data.nombre} data-ape=${data.apellido}>
-                             <span class="img-btn"><img src="images/34042cb0b9d6eb31f644.png" alt="odograma"</span>
-                           </button>                            
-                           <button  class="td-btn t-tip left" id="btn-eliminar-paciente" tip="Eliminar este Paciente" data-id=${doc.id}>
-                              <span class="img-btn"><img src="images/d17db51e63836a5fa5aa.png" alt="control"</span>
-                           </button>
-                        </td>
-                     </tr>`;
+buscador.addEventListener('input', e => {
+  tableSearcher('tabla-paciente', e.target.value.toLowerCase());
+});
 
-      pacientesTbody.innerHTML += prow;
-      //seleccionar todos los botones de la tabla
-      const btnVerPaciente = document.querySelectorAll('.td-btn');
-      //loop de botones de la tabla
-      btnVerPaciente.forEach(boton => {
-        boton.addEventListener('click', e => {
-          let pacienteSeleccionado = e.target.dataset.id;
-          localStorage.setItem('pacienteActual', JSON.stringify(pacienteSeleccionado));
-          localStorage.setItem('nombrePaciente', JSON.stringify(e.target.dataset.nom));
-          localStorage.setItem('apellidoPaciente', JSON.stringify(e.target.dataset.ape));
+//event delegation para el menu de la tabla principal de pacientes
+pacientesTbody.addEventListener('click', e => {
+  const elemento = e.target;
+  const fila = elemento.parentNode.closest('tr').rowIndex;
+  console.log('fila actual:', fila);
+  let pacienteSeleccionado = e.target.dataset.docid;
+  localStorage.setItem('pacienteActual', JSON.stringify(pacienteSeleccionado));
+  localStorage.setItem('nombrePaciente', JSON.stringify(e.target.dataset.nom));
+  localStorage.setItem('apellidoPaciente', JSON.stringify(e.target.dataset.ape));
 
-          if (e.target.id == 'btn-info-paciente') {
-            verInfoPaciente(pacienteSeleccionado);
-          }
-
-          if (e.target.id == 'btn-ver-paciente') {
-            window.open('editar-historia.html', '_self');
-          }
-          if (e.target.id == 'btn-control-paciente') {
-            window.open('control-asistencias.html', '_self');
-          }
-          if (e.target.id == 'btn-odograma') {
-            window.open('odograma.html', '_self');
-          }
-          if (e.target.id == 'btn-eliminar-paciente') {
-            deletePaciente(pacienteSeleccionado);
-          }
-        });
-      }); //fin del  forEach para loop de todos los botones de la table
-      // **********************>>>>> FIN DE CODIGO TABLA SECTION PACIENTES <<<<<<<<<****************
-
-      // **************************TABLA SECTION DASBOARD **************************************
-      let drow = `<tr> 
-                        <td class="td-id-hidden">${doc.id}</td> 
-                        <td><img src='../images/0f10931cfc0a3ee46188.png'/></td>
-                        <td>${data.nombre}</td>
-                        <td>${data.apellido}</td>
-                        <td>${data.edad}</td>
-                        <td>${data.celular}</td>
-                        <td>${data.tlflocal}</td>                       
-                     </tr>`;
-      dashboardTbody.innerHTML += drow;
-      // >>>>>>>>>>>>>>>>>>>>>> FIN DE CODIGO TABLA SECTION DASHBOARD <<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-      // **************************TABLA DESCARGA A EXCEL **************************************
-      let myAlergias = [];
-      let myPersonales = [];
-      let myFamiliares = [];
-      data.alergias.forEach(el1 => {
-        el1 === '' ? '' : myAlergias.push(el1);
-      });
-
-      data.antecedentesPersonales.forEach(el2 => {
-        el2 === '' ? '' : myPersonales.push(el2);
-      });
-
-      data.antecedentesFamiliares.forEach(el3 => {
-        el3 === '' ? '' : myFamiliares.push(el3);
-      });
-
-      let excelrow = `<tr> 
-                        <td class="td-id-hidden">${doc.id}</td> 
-                        <td data-a-v="middle">${data.nombre}</td>
-                        <td data-a-v="middle">${data.apellido}</td>
-                        <td data-a-v="middle" data-a-h="center">${data.edad}</td>
-                        <td data-a-v="middle">${data.celular}</td>
-                        <td data-a-v="middle">${data.tlflocal}</td>
-                        <td data-a-v="middle">${data.fnacimiento}</td>
-                        <td data-a-v="middle">${data.email}</td>
-                        <td data-a-v="middle" data-a-h="center">${data.genero}</td>
-                        <td data-a-v="middle" data-a-h="center">${data.edocivil}</td>
-                        <td data-a-v="middle">${data.direccion1}</td>
-                        <td data-a-v="middle">${data.contacto}</td>
-                        <td data-a-v="middle" data-a-h="center">${data.estatura}</td>
-                        <td data-a-v="middle" data-a-h="center">${data.peso}</td>
-                        <td data-a-v="middle">${data.tratadopormedico == 'true' ? 'SI' : 'NO'}</td>
-                        <td data-a-v="middle">${data.tratadoporenfermedad}</td>
-                        <td data-a-v="middle">${data.checktomamedicamento == 'true' ? 'SI' : 'NO'}</td>
-                        <td data-a-v="middle">${data.cualesmedicamentos}</td>
-                        <td data-a-v="middle">${data.dosismeds}</td>
-                        <td data-a-v="middle" data-a-wrap="true">${myAlergias}</td>
-                        <td data-a-v="middle">${data.textalergicootros}</td>
-                        <td data-a-v="middle" data-a-wrap="true">${myPersonales}</td>
-                        <td data-a-v="middle">${data.texthabitos}</td>
-                        <td data-a-wrap="true">${myFamiliares}</td>
-                        <td data-a-v="middle">${data.otraenfermedad}</td>
-                        <td data-a-v="middle">${data.motivoprincipalconsulta}</td>
-                        <td data-a-v="middle">${data.fechaultimaconsulta}</td>
-                        <td data-a-v="middle">${data.motivoultimaconsulta}</td>
-                        <td data-a-v="middle">${data.checkcomplicaciones == 'true' ? 'SI' : 'NO'}</td>
-                        <td data-a-v="middle">${data.cualescomplicaciones}</td>
-                     </tr>`;
-
-      excelTbody.innerHTML += excelrow;
-      myAlergias = [];
-      myFamiliares = [];
-      myPersonales = [];
-      // >>>>>>>>>>>>>>>>>>>>>> FIN DE CODIGO TABLA DESCARGA A EXCEL <<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    }); //fin de snapshot iterable
-  }); //fin de pacientesData
-}; //fin de populateTabla()
+  if (elemento.id == 'btn-info-paciente') {
+    verInfoPaciente(elemento.dataset.docid);
+  }
+  if (elemento.id == 'btn-editar-paciente') {
+    window.open('editar-historia.html');
+  }
+  if (elemento.id == 'btn-control-paciente') {
+    window.open('control-asistencias.html');
+  }
+  if (elemento.id == 'btn-odograma') {
+    window.open('odograma.html');
+  }
+  if (elemento.id == 'btn-eliminar-paciente') {
+    deletePaciente(elemento.dataset.docid, fila);
+  }
+});
 
 onAuthStateChanged(auth, user => {
   if (user) {
     sesion.style.display = 'none';
     logout.style.display = 'inline-block';
+    getAllPacientes();
     document.getElementById('usuario').innerText = user.email;
     menuLinks.forEach(link => {
       link.style.pointerEvents = 'all';
@@ -205,9 +107,8 @@ onAuthStateChanged(auth, user => {
     imgLogo.style.pointerEvents = 'all';
     barraMenu.classList.toggle('mostrar');
     menuLinks[0].click();
-    getUsuarios();
-    populateTabla();
   } else {
+    pacientesTbody.innerHTML += ' ';
     seccionActiva(seccionInicio);
     sesion.style.display = 'flex';
     logout.style.display = 'none';
@@ -278,8 +179,8 @@ menu.forEach(item => {
 });
 
 menuLinks[0].addEventListener('click', () => {
-  tablaContainer.style.display = 'block';
   infoContainer.style.display = 'none';
+  tablaContainer.style.display = 'block';
   menuActivo(menuLinks[0]);
   seccionActiva(seccionPacientes);
 });
@@ -287,6 +188,7 @@ menuLinks[0].addEventListener('click', () => {
 menuLinks[1].addEventListener('click', () => {
   menuActivo(menuLinks[1]);
   seccionActiva(seccionAgenda);
+  getUsuarios();
   horario();
   populateAgenda();
 });
@@ -301,21 +203,16 @@ menuLinks[2].addEventListener('click', () => {
 logout.addEventListener('click', () => {
   signOut(auth)
     .then(() => {
-      alert('Ha cerrado la sesion! ...Hasta luego.');
+      alert('Sesion Terminada! Hasta luego.');
     })
     .catch(err => {
-      alert('Ocurrio un error al cerrar la sesion!');
+      alert('error al cerrar la sesion!');
     });
-});
-
-buscador.addEventListener('input', e => {
-  tableSearcher('tabla-paciente', e.target.value.toLowerCase());
 });
 
 function verInfoPaciente(id) {
   tablaContainer.style.display = 'none';
   infoContainer.style.display = 'block';
-
   const docRef = doc(db, 'pacientes', id);
   getDoc(docRef)
     .then(doc => {
@@ -362,11 +259,10 @@ function verInfoPaciente(id) {
       tableInfo.innerHTML += row;
     })
     .catch(error => console.log(error.message));
-} //fin de info paciente
+}
 
 btnCerrarInfo.addEventListener('click', () => {
-  infoContainer.style.display = 'none';
-  tablaContainer.style.display = 'block';
+  menuLinks[0].click();
 });
 
 function populateAgenda() {
@@ -488,8 +384,6 @@ navToggle.addEventListener('click', () => {
 closeNav.addEventListener('click', () => {
   hideNav();
 });
-
-// hide nav after clicked outside of nav
 navOverlay.addEventListener('click', e => {
   hideNav();
 });
@@ -568,9 +462,6 @@ function getDatos() {
 
       if (!isNaN(doc.data().monto)) {
         fControl > fCorte ? (montoDolares = parseInt(Number(doc.data().monto))) : (montoDolares = 0);
-        fControl > fCorte
-          ? console.log('fecha control es mayor', doc.data().fecha, fControl, 'fecha corte', fCorte, doc.data().monto)
-          : '';
       }
       cardActividad.innerHTML = snapshot.docs.length;
       ingresos += montoDolares;
@@ -637,11 +528,13 @@ function deleteCita(id) {
   }
 } //FIN DE DELETE CITA
 
-function deletePaciente(id) {
+function deletePaciente(id, xfila) {
+  console.log('FILA RECIBIDA PARA ELIMINAR:', xfila);
   const eliminar = confirm('Esta Seguro que quiere Eliminar este Paciente?');
   if (eliminar) {
     const docRef = doc(db, 'pacientes', id);
     const queryControles = query(collection(db, 'controlasistencias'), where('idPaciente', '==', id));
+    document.getElementById('tabla-paciente').deleteRow(xfila);
     deleteDoc(docRef);
     //delete controles asociados al paciente
     getDocs(queryControles).then(res => {
@@ -658,3 +551,95 @@ function deleteControl(id) {
     alert('Paciente y Controles asociados Eliminados!');
   });
 }
+
+function templatePacientes(paramsnapdoc, docid) {
+  const paciente = paramsnapdoc;
+  let prow = `<tr> 
+            <td id="td-titulo">Paciente</td>   
+            <td id="td-id-hidden">${docid}</td>                          
+            <td data-label="Nombre">${paciente.nombre}</td>
+            <td data-label="Apellido">${paciente.apellido}</td>
+            <td data-label="Edad">${paciente.edad}</td>
+            <td data-label="Telefono">${paciente.celular}</td>
+            <td data-label="" class="ver-paciente">  
+                <button class="td-btn info t-tip top" id="btn-info-paciente" tip="Ver Historia" data-docid=${docid}  data-nom=${paciente.nombre} data-ape=${paciente.apellido}>
+                   <ion-icon name="information-circle-outline" class="btn-menu-table info"></ion-icon>
+                </button> 
+                <button  class="td-btn t-tip top" id="btn-editar-paciente" tip="Editar Historia" data-docid=${docid}  data-nom=${paciente.nombre} data-ape=${paciente.apellido}>
+                   <ion-icon name="construct" class="btn-menu-table"></ion-icon>
+                </button>        
+                <button class="td-btn t-tip top" id="btn-control-paciente" tip="Control Asistencia" data-docid=${docid}  data-nom=${paciente.nombre} data-ape=${paciente.apellido}>
+                   <ion-icon name="clipboard" class="btn-menu-table"></ion-icon>   
+                </button>                       
+                <button  class="td-btn odo t-tip top" id="btn-odograma" tip="Odograma" data-docid=${docid}  data-nom=${paciente.nombre} data-ape=${paciente.apellido}>
+                   <span class="img-btn"><img src="images/34042cb0b9d6eb31f644.png" alt="odograma"></span>
+                </button>                            
+                <button  class="td-btn t-tip left" id="btn-eliminar-paciente" tip="Eliminar este Paciente" data-docid=${docid}>
+                   <ion-icon name="trash" class="btn-menu-table"></ion-icon>
+                </button>
+            </td>
+      </tr>`;
+
+  pacientesTbody.innerHTML += prow;
+}
+
+const getAllPacientes = async () => {
+  let stopFlag = false;
+  mySpinner.style.display = 'flex';
+  mySpinnerText.setAttribute('data-spintext', 'Cargando Pacientes ' + tablaPacientes.rows.length);
+  const limite = 50;
+  const qallpacientes = query(
+    collection(db, 'pacientes'),
+    orderBy('nombre', 'asc'),
+    startAfter(latestDoc || 0),
+    limit(limite)
+  );
+
+  const querySnapshot = await getDocs(qallpacientes);
+  querySnapshot.forEach(doc => {
+    const paciente = doc.data();
+    templatePacientes(paciente, doc.id);
+  });
+  mySpinner.style.display = 'none';
+  latestDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+  if (querySnapshot.empty) {
+    //loading.classList.remove('active');
+    loading.classList.add('active');
+    loading.innerText = tablaPacientes.rows.length + ' Pacientes registrados';
+    stopFlag = true;
+    buscadorContainer.style.display = 'flex';
+    //newPaciente();
+  }
+  if (stopFlag == true) {
+    return;
+  } else {
+    //ojo aqui esta el infinite scroll trayendose todos los pacientes
+    getAllPacientes();
+  }
+};
+
+const newPaciente = () => {
+  const unsubscribe = onSnapshot(collection(db, 'pacientes'), snapshot => {
+    //Si es la primera vez que se registra el listener de firebase  do nothing
+    console.log('Doc changes add lenth=', snapshot.docs.length);
+    if (snapshot.docChanges().length > 1 || 0) {
+      console.log('first subscribe - do nothing -');
+      cardPacientes.innerHTML = snapshot.docChanges().length;
+      return;
+    }
+    //Si es una adicion a la coleccion de pacientes to-do
+    snapshot.docChanges().forEach(change => {
+      if (change.type === 'added') {
+        console.log('se agrego un paciente nuevo');
+        templatePacientes(change.doc.data(), change.doc.id);
+      }
+      /* 
+     
+      if (change.type === 'removed') {
+        console.log('Paciente Eliminado: ', change.doc.data());
+      }
+ */
+    });
+  });
+};

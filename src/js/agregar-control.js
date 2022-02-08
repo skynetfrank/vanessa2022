@@ -146,5 +146,5 @@ selectorTratamiento.addEventListener('change', () => {
 });
 
 btnCerrar.addEventListener('click', () => {
-  window.history.back();
+  window.close();
 });

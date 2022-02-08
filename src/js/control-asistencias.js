@@ -47,7 +47,6 @@ function getControl() {
   getDocs(myQuery).then(res => {
     res.forEach(doc => {
       const myData = doc.data();
-      console.log('Controles obtenidos para llenar slide:', myData);
       const idControl = doc.id;
       addSlide(myData, idControl);
     });
@@ -468,12 +467,13 @@ function addSlide(datos, id) {
 }
 
 function deleteAsistencia(id) {
-  const eliminar = confirm('Esta Seguro que quiere Eliminar este Paciente?');
+  const eliminar = confirm('Esta Seguro de Eliminar este Control?');
   if (eliminar) {
     const docRef = doc(db, 'controlasistencias', id);
     deleteDoc(docRef)
       .then(result => {
-        alert('Registro Eliminado', result);
+        alert('Control Eliminado', result);
+        window.close();
       })
       .catch(error => {
         alert('Error: ', error.message);
@@ -482,5 +482,5 @@ function deleteAsistencia(id) {
 } //FIN DE DELETEASISTENCIA
 
 btnCerrar.addEventListener('click', () => {
-  window.history.back();
+  window.close();
 });

@@ -1,5 +1,5 @@
 import { db } from '../js/firebaseconfig';
-import { collection, doc, query, where, updateDoc, getDoc, getDocs, serverTimestamp } from 'firebase/firestore';
+import { doc, updateDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 const idControlLocal = JSON.parse(localStorage.getItem('controltoupdate'));
 const nombrePaciente = JSON.parse(localStorage.getItem('nombrePaciente'));
 const apellidoPaciente = JSON.parse(localStorage.getItem('apellidoPaciente'));
@@ -80,7 +80,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const controlRef = doc(db, 'controlasistencias', idControlLocal);
   getDoc(controlRef).then(doc => {
     const data = doc.data();
-    console.log('data a editar', doc.id, data);
     document.querySelector('.fechacontrolasistencia').value = data.fecha;
     document.getElementById('evaluaciongeneral').value = data.evaluaciongeneral;
     document.getElementById('tratamientoaplicado').value = data.tratamientoAplicado;
@@ -135,7 +134,7 @@ historia.addEventListener('submit', e => {
 
 btnCerrar.addEventListener('click', e => {
   e.preventDefault();
-  window.history.back();
+  window.close();
 });
 
 selectorEvaluacion.addEventListener('change', () => {

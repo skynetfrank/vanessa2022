@@ -304,6 +304,8 @@ historia.addEventListener('submit', async e => {
   addDoc(collection(db, 'controlasistencias'), controlAsistencia)
     .then(result => {
       console.log('SE HA AGREGADO UN NUEVO CONTROL DE ASISTENCIAS');
+       historia.reset();
+       window.history.back();
     })
     .catch(err => {
       console.log('Hubo un error al agregar control de asistencias', err.message);
@@ -315,7 +317,7 @@ historia.addEventListener('submit', async e => {
 }); //end of formulario submit
 
 btnCerrar.addEventListener('click', () => {
-  window.history.back();
+  window.close();
 });
 
 //codigo para los custom inputs de la seccion contacto

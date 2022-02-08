@@ -25,7 +25,6 @@
     "webpack-dev-server": "^4.4.0"
   },
   "dependencies": {
-    "@linways/table-to-excel": "^1.0.4",
     "firebase": "^9.4.0"
   }
 }
