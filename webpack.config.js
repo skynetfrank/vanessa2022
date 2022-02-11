@@ -8,6 +8,7 @@ module.exports = {
   // The entry point file described above
   entry: {
     app: './src/index.js',
+    pacientes: './src/js/pacientes.js',
     historia: './src/js/historia.js',
     editarhistoria: './src/js/editar-historia.js',
     controles: './src/js/control-asistencias.js',
@@ -83,6 +84,11 @@ module.exports = {
       template: './src/index.html',
       filename: './index.html',
       chunks: ['app'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/html/pacientes.html',
+      filename: './pacientes.html',
+      chunks: ['pacientes'],
     }),
     new HtmlWebpackPlugin({
       template: './src/html/historia.html',

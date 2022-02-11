@@ -7,40 +7,17 @@
   <meta name="description" content="Administrador-Web para consultorio virtual de odontologia">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="images/favicon.png" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <title>Consultorio Virtual: Admin</title>
 </head>
 
 <body>
-  <div id="floating-images">
-    <img src="images/odograma-icon.png" alt="odograma">
-    <img src="images/odograma1.jpg" alt="odograma">
-    <img src="images/clock-icon.png" alt="clock">
-  </div>
-  <div class="myspinner-container">
-    <div class="myspinner-text" data-spintext="Cargando Pacientes!"></div>
-    <div class="myspinner-sector myspinner-sector-red"></div>
-    <div class="myspinner-sector myspinner-sector-blue"></div>
-    <div class="myspinner-sector myspinner-sector-green"></div>
-  </div>
-  <nav>
-    <a href="#seccion__inicio"><img class="img-logo" src="images/logovanessa.png" alt="logo-img"></a>
-    <span id="usuario"></span>
-    <ul id="barra__menu">
-      <li><a href="#seccion__pacientes">Pacientes</a></li>
-      <li><a href="#seccion__agenda">Agenda</a></li>
-      <li><a href="#seccion__dashboard">Dashboard</a></li>
-      <li id="logout-link"><a class="logout" href="#">Salir</a></li>
-    </ul>
-    <label id="hamburguesa">
-      <img src="images/burger-icon.png" alt="">
-    </label>
-  </nav>
-  <section id="seccion__inicio">
+  <section id="login__section">
+    <div class="lock">
+      <button class="btn">Iniciar Sesion</button>
+    </div>
     <div id="sesion">
       <div class="login__container">
         <div class="title">Iniciar Sesion</div>
-
         <form action="#" id="form-sesion">
           <div class="input__div">
             <input type="text" name="email" autocomplete="off" required>
@@ -50,296 +27,17 @@
             <input type="password" name="password" autocomplete="off" required>
             <label> Password</label>
           </div>
-          <a href="#" id="forgot-pw">Olvidaste tu password?</a>
-          <input type="submit" class="btn" value="Entrar">
+          <div class="forgot-pw">
+            <a href="#" id="forgot-pw">Olvidaste tu password?</a>
+          </div>
+          <div class="btn-varios">
+            <button type="submit" class="btn">Entrar</button>
+            <button type="button" class="btn cerrar">Cerrar</button>
+          </div>
         </form>
-        <span class="version">version:29ene22:10pm</span>
       </div>
     </div>
   </section>
-
-  <section id="seccion__pacientes">
-    <div class="tabla-container">
-      <div id="buscador">
-        <div class="search__div">
-          <input class="search__input" type="text" name="" placeholder="Buscar">
-          <ion-icon name="search" class="lupa"></ion-icon>
-        </div>
-        <a class="btn-add-paciente t-tip right" tip="Agregar Paciente" href="#">
-          <ion-icon name="person-add" class="person-add"></ion-icon>
-        </a>
-        <button class="t-tip right" id="btn-excel" tip="Descarga Tabla Excel">
-          <span class="img-btn"><img src="images/excel-icon.png" alt="excel"> </span>
-        </button>
-      </div>
-      <div class="scroll-container">
-        <table class="table highlight" id="tabla-paciente">
-          <thead>
-            <tr>
-              <th id="th-id-hidden">id</th>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Edad</th>
-              <th>Tel&eacutefono</th>
-              <th>Accion</th>
-            </tr>
-          </thead>
-          <tbody id="pacientes-tbody">
-          </tbody>
-        </table>
-      </div>
-      <div class="loading">cargando pacientes...</div>
-    </div>
-    <div class="info-container">
-      <button class="volver-info">volver</a></button>
-      <table class="table info vhighlight" id="tabla-info-paciente">
-        <thead>
-          <th></th>
-          <tr>
-            <th>Cedula</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>fnacimiento</th>
-            <th>Edad</th>
-            <th>Celular</th>
-            <th>Tlf Local</th>
-            <th>Direccion</th>
-            <th>Contacto</th>
-            <th>Email</th>
-            <th>Genero</th>
-            <th>Estado Civil</th>
-            <th>Estatura</th>
-            <th>Peso</th>
-            <th>Tratado por Medico?</th>
-            <th>Es Tratado por Alguna Enfermedad?</th>
-            <th>Toma algun Medicamento?</th>
-            <th>Cuales Medicamentos</th>
-            <th>Dosis de esos medicamentos</th>
-            <th>Alergias</th>
-            <th>Alergia (otros)</th>
-            <th>Antecedentes Personles</th>
-            <th>Antecedentes Familiares</th>
-            <th>Padece Alguna otra Enfermedad?</th>
-            <th>Habitos*</th>
-          </tr>
-        </thead>
-        <tbody id="info-pacientes-tbody">
-        </tbody>
-      </table>
-    </div>
-  </section>
-  <section class="timeline" id="seccion__agenda">
-    <div class="nav-toggle  t-tip right" tip="Horas Disponibles">
-      <ion-icon name="alarm" size="large" class="clock-icon vibrate-1 t-tip right" tip="Horas Disponibles"></ion-icon>
-    </div>
-    <ul id="ul-timeline">
-    </ul>
-
-    <!-- nav start -->
-    <div class="nav-overlay"></div>
-    <div class="nav">
-      <div class="head">
-        <ion-icon name="time" size="large" class="time-icon"></ion-icon>
-        <p></p>
-        <h4>Horas Disponibles Hoy</h4>
-        <div class="close">&times;</div>
-      </div>
-      <div class="horario" id="div-horario">
-        <div id="listaHoras">
-
-        </div>
-      </div>
-    </div>
-    <!-- nav end -->
-
-
-
-  </section>
-  <section id="seccion__dashboard">
-    <main>
-      <div class="dash-container">
-        <!--4 cards top-->
-        <div class="dash-card total1">
-          <div class="dash-info">
-            <div class="dash-info-detail">
-              <h3>Ingresos</h3>
-              <p>acumulados 2022</p>
-              <h2 id="total-ingresos"></h2>
-            </div>
-            <div class="dash-info-image">
-              <i class="fas fa-money-check-alt"></i>
-            </div>
-          </div>
-        </div>
-        <div class="dash-card total2">
-          <div class="dash-info">
-            <div class="dash-info-detail">
-              <h3>Actividad</h3>
-              <p>consultas</p>
-              <h2 id="total-procedimientos"></h2>
-            </div>
-            <div class="dash-info-image">
-              <i class="fas fa-syringe"></i>
-            </div>
-          </div>
-        </div>
-        <div class="dash-card total3">
-          <div class="dash-info">
-            <div class="dash-info-detail">
-              <h3>Pacientes</h3>
-              <p>registrados</p>
-              <h2 id="total-pacientes"></h2>
-            </div>
-            <div class="dash-info-image">
-              <i class="fas fa-head-side-mask"></i>
-            </div>
-          </div>
-        </div>
-        <div class="dash-card total4">
-          <div class="dash-info">
-            <div class="dash-info-detail">
-              <h3>Citas Web</h3>
-              <p>solicitadas</p>
-              <h2 id="total-citas">56</h2>
-            </div>
-            <div class="dash-info-image">
-              <i class="fas fa-hospital-user"></i>
-            </div>
-          </div>
-        </div>
-        <!--2 cards bottom-->
-        <div class="dash-card detail">
-          <!-- table pacientes aqui-->
-          <table id="tabla-dash-pacientes" class="striped highlight">
-            <thead>
-              <tr>
-                <th id="th-id-hidden">id</th>
-                <th></th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Edad</th>
-                <th>Celular</th>
-                <th>Telefono Local</th>
-              </tr>
-            </thead>
-            <tbody id="dash-pacientes-tbody">
-            </tbody>
-          </table>
-        </div>
-        <div class="dash-card customer">
-          <h2>Citas Pendientes</h2>
-        </div>
-      </div>
-    </main>
-    <div class="foot">
-      <p> powered by&copy;Reactor-Sistemas v20jun21-03:00pm</p>
-    </div>
-
-
-
-
-
-  </section>
-  <div class="excel-container">
-    <!-- table pacientes para descarga a excel aqui-->
-    <table id="tabla-excel" class="striped highlight" data-cols-width="0,15,15,5,15,15,
-          10,25,10,10,25,25,10,5,15,25,15,25,25,30,25,30,25,25,25,25,25,25,15,25">
-      <thead>
-        <tr>
-          <th id="th-id-hidden">id</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Nombre</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Apellido</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Edad</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Celular</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Telefono</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Fecha Nac.</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Email</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Genero</th>
-          <th data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid" data-b-a-c="ffffff">
-            Edo. civil</th>
-          <th data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid" data-b-a-c="ffffff">
-            Direccion</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Contacto</th>
-          <th data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid" data-b-a-c="ffffff">
-            Estatura</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Peso</th>
-          <th data-f-bold="true" data-a-wrap="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center"
-            data-b-a-s="solid" data-b-a-c="ffffff">
-            Tratado por Medico?</th>
-          <th data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid" data-b-a-c="ffffff">
-            Para que Enfermedad?</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Toma Medicamentos</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Cuales Medicamentos?</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            En que Dosis?</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Alergico a?</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Otras Alergias</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Antecedentes Personales</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Habitos</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Antecedentes Familiares</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Otra enfermedad?</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Motivo Esta Consulta</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Fecha Ultima consulta</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Motivo Ultima Consulta</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Complicaciones</th>
-          <th data-f-bold="true" data-fill-color="0457c3" data-f-color="ffffff" data-a-h="center" data-b-a-s="solid"
-            data-b-a-c="ffffff">
-            Cuales Complicaciones?</th>
-        </tr>
-      </thead>
-      <tbody id="excel-body">
-      </tbody>
-    </table>
-    <!-- fin de table pacientes aqui-->
-  </div>
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@linways/table-to-excel@1.0.4/dist/tableToExcel.min.js"></script>
 </body>
 
 </html>

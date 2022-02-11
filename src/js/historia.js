@@ -1,179 +1,121 @@
 import { db } from '../js/firebaseconfig';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { calcEdad, dolarToday, firstUpperCase, dateToAMD } from '../commons/utilities';
 
 const historia = document.getElementById('historia-form');
-const inputs = document.querySelectorAll('.input');
-const collectionRef = collection(db, 'pacientes');
-const btnCerrar = document.querySelector('.volver');
-const inputDolares = document.getElementById('montopagado');
-const inputCambio = document.getElementById('cambiodia');
-const inputBolivares = document.getElementById('montopagadobs');
-const selectorEvaluacion = document.getElementById('selector-evaluacion');
-const selectorTratamiento = document.getElementById('selector-tratamiento');
-const textboxEvaluacion = document.getElementById('evaluaciongeneral');
-const textboxTratamiento = document.getElementById('tratamientoaplicado');
-const fechaNacimiento = document.getElementById('fnacimiento');
-const inputEdad = document.getElementById('edad');
-const inputPeso = document.getElementById('peso');
-const inputEstatura = document.getElementById('estatura');
-const inputCelular = document.getElementById('celular');
-const inputLocal = document.getElementById('tlflocal');
-const inputCedula = document.getElementById('cedula');
-const inputFormapago = document.getElementById('formadepago');
-
-//trigger focus event on element
-const eventoFocus = new FocusEvent('focus', {
-  view: window,
-  bubbles: true,
-  cancelable: true,
-});
-
-function dolarToday() {
-  fetch('https://s3.amazonaws.com/dolartoday/data.json')
-    .then(res => res.json())
-    .then(data => {
-      const cambio = data.USD.dolartoday;
-      const dolares = document.getElementById('montopagado').value;
-      inputCambio.dispatchEvent(eventoFocus);
-      inputBolivares.dispatchEvent(eventoFocus);
-      historia['cambiodia'].value = cambio;
-      historia['montopagadobs'].value = (parseFloat(cambio) * parseFloat(dolares)).toFixed(2);
-    })
-    .catch(err => {
-      alert('Dolar-Today No esta disponible, ingrese el cambio de forma manual');
-      inputCambio.dispatchEvent(eventoFocus);
-      inputBolivares.dispatchEvent(eventoFocus);
-      historia['cambiodia'].value = 0;
-      historia['montopagadobs'].value = (parseFloat(cambio) * parseFloat(dolares)).toFixed(2);
-    });
-}
-
-fechaNacimiento.addEventListener('blur', e => {
-  e.preventDefault();
-  const fechaActual = new Date();
-  const anoActual = parseInt(fechaActual.getFullYear());
-  const mesActual = parseInt(fechaActual.getMonth() + 1);
-  const diaActual = parseInt(fechaActual.getDate());
-
-  const anoNacimiento = parseInt(String(fechaNacimiento.value).substring(0, 4));
-  const mesNacimiento = parseInt(String(fechaNacimiento.value).substring(5, 7));
-  const diaNacimiento = parseInt(String(fechaNacimiento.value).substring(8, 10));
-
-  let edad = 0;
-
-  console.log('actual:', diaActual, mesActual, anoActual);
-  console.log('Nacimiento:', diaNacimiento, mesNacimiento, anoNacimiento);
-  console.log('edad en input', document.getElementById('fnacimiento').value);
-
-  edad = anoActual - anoNacimiento;
-  if (mesActual < mesNacimiento) {
-    edad--;
-  } else if (mesActual == mesNacimiento) {
-    if (diaActual < diaNacimiento) {
-      edad--;
-    }
-  }
-  document.getElementById('edad').dispatchEvent(eventoFocus);
-  document.getElementById('edad').value = edad;
-});
-
-inputCambio.addEventListener('blur', () => {
-  const cambio = historia['cambiodia'].value;
-  const dolares = document.getElementById('montopagado').value;
-  inputBolivares.dispatchEvent(eventoFocus);
-  historia['montopagadobs'].value = (parseFloat(cambio) * parseFloat(dolares)).toFixed(2);
-});
-
-inputDolares.addEventListener('blur', e => {
-  e.preventDefault();
-  dolarToday();
-});
-
-inputEdad.addEventListener('blur', e => {
-  e.preventDefault();
-  const valor = parseInt(inputEdad.value);
-  if (valor < 2 || valor > 99) {
-    inputEdad.value = '';
-    alert('La edad debe estar entre 2 y 99 años');
-  }
-});
-
-inputPeso.addEventListener('blur', e => {
-  e.preventDefault();
-  const valor = parseInt(inputPeso.value);
-  if (valor < 5 || valor > 250) {
-    inputPeso.value = '';
-    alert('El peso debe estar entre 5 y 250 kgs.');
-  }
-});
-
-inputEstatura.addEventListener('blur', e => {
-  e.preventDefault();
-  const valor = parseInt(inputEstatura.value);
-  if (valor < 0.5 || valor > 2.3) {
-    inputEstatura.value = '';
-    alert('La Estatura debe estar entre 0.5 y 2.30 mts');
-  }
-});
-
-inputCelular.addEventListener('change', e => {
-  e.preventDefault();
-  const celularRegex = /^(0414|0424|0412|0416|0426)[-][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/g;
-  if (!validarInput(inputCelular.value, celularRegex)) {
-    alert('Ejemplo: 0412-555-55-55');
-    inputCelular.value = '';
-  }
-});
-
-inputLocal.addEventListener('change', e => {
-  e.preventDefault();
-  const telefonoRegex = /^[0-9]{4}[-][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/g;
-  validarInput(inputLocal.value, telefonoRegex) ? '' : (inputLocal.value = '');
-  if (!validarInput(inputLocal.value, telefonoRegex)) {
-    alert('Ejemplo: 0212-555-55-55');
-    inputCelular.value = '';
-  }
-});
-
-inputCedula.addEventListener('change', e => {
-  e.preventDefault();
-  const cedulaRegex = /^[V|E|J|P][-][0-9]{5,9}$/;
-  if (!validarInput(inputCedula.value, cedulaRegex)) {
-    alert('Ejemplo: V-999999999');
-    inputCedula.value = '';
-  }
-});
-
+const hoy = new Date();
 localStorage.clear();
-var date = new Date();
-document.querySelector('.fechacontrolasistencia').value =
-  date.getFullYear().toString() +
-  '-' +
-  (date.getMonth() + 1).toString().padStart(2, 0) +
-  '-' +
-  date.getDate().toString().padStart(2, 0);
 
-function autoCapital(cadena) {
-  return cadena.charAt(0).toUpperCase() + cadena.slice(1);
-}
-
-inputFormapago.addEventListener('change', e => {
+historia.addEventListener('focusout', e => {
   e.preventDefault();
-  document.getElementById('referenciapago').dispatchEvent(eventoFocus);
-  if (inputFormapago.value == 'Efectivo') {
-    document.getElementById('referenciapago').value = 'cash$';
-    document.getElementById('select-banco').value = 'Otro';
-  } else {
-    document.getElementById('referenciapago').value = '';
-    document.getElementById('select-banco').value = '';
+  let elemento = e.target.id;
+  console.log('blur event fired');
+  console.log('Elemento seleccionado id (blur):', elemento);
+  switch (elemento) {
+    case 'fnacimiento':
+      document.getElementById('edad').parentNode.classList.add('focus');
+      document.getElementById('edad').value = calcEdad(document.getElementById('fnacimiento').value);
+      break;
+    case 'montopagado':
+      e.preventDefault();
+      dolarToday(
+        document.getElementById('cambiodia'),
+        document.getElementById('montopagado'),
+        document.getElementById('montopagadobs')
+      );
+      break;
+    case 'cambiodia':
+      const cambio = historia['cambiodia'].value;
+      const dolares = document.getElementById('montopagado').value;
+      historia['montopagadobs'].value = (parseFloat(cambio) * parseFloat(dolares)).toFixed(2);
+      break;
+    case 'edad':
+      const valorEdad = parseInt(document.getElementById('edad').value);
+      if (valorEdad < 2 || valorEdad > 99) {
+        document.getElementById('edad').value = '';
+        alert('La edad debe estar entre 2 y 99 años');
+      }
+      break;
+    case 'peso':
+      const valorPeso = parseInt(document.getElementById('peso').value);
+      if (valorPeso < 5 || valorPeso > 250) {
+        document.getElementById('peso').value = '';
+        alert('El peso debe estar entre 5 y 250 kgs.');
+      }
+      break;
+    case 'estatura':
+      const valorEstatura = parseInt(document.getElementById('estatura').value);
+      if (valorEstatura < 0.5 || valorEstatura > 2.3) {
+        document.getElementById('estatura').value = '';
+        alert('La Estatura debe estar entre 0.5 y 2.30 mts');
+      }
+      break;
+    default:
+      console.log('default switch for blur');
   }
 });
+
+historia.addEventListener('change', e => {
+  e.preventDefault();
+  let elemento = e.target.id;
+ 
+  switch (elemento) {
+    case 'selector-evaluacion':
+      document.getElementById('evaluaciongeneral').value +=
+        ' - ' + document.getElementById('selector-evaluacion').value + '\r\n';
+      break;
+    case 'selector-tratamiento':
+      document.getElementById('tratamientoaplicado').value +=
+        ' - ' + document.getElementById('selector-tratamiento').value + '\r\n';
+      break;
+    case 'celular':
+      const celularRegex = /^(0414|0424|0412|0416|0426)[-][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/g;
+      if (!validarInput(document.getElementById('celular').value, celularRegex)) {
+        alert('Ejemplo: 0412-555-55-55');
+        document.getElementById('celular').value = '';
+      }
+      break;
+    case 'tlflocal':
+      const telefonoRegex = /^[0-9]{4}[-][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/g;
+      validarInput(document.getElementById('tlflocal').value, telefonoRegex)
+        ? ''
+        : (document.getElementById('tlflocal').value = '');
+      if (!validarInput(document.getElementById('tlflocal').value, telefonoRegex)) {
+        alert('Ejemplo: 0212-555-55-55');
+        document.getElementById('tlflocal').value = '';
+      }
+      break;
+    case 'cedula':
+      const cedulaRegex = /^[V|E|J|P][-][0-9]{5,9}$/;
+      if (!validarInput(document.getElementById('cedula').value, cedulaRegex)) {
+        alert('Ejemplo: V-999999999');
+        document.getElementById('cedula').value = '';
+      }
+      break;
+    case 'formadepago':
+      document.getElementById('referenciapago').parentNode.classList.add('focus');
+      if (document.getElementById('formadepago').value == 'Efectivo') {
+        document.getElementById('referenciapago').value = 'cash$';
+        document.getElementById('select-banco').value = 'Otro';
+        document.getElementById('tipo-pago').value = 'Total';
+      } else {
+        document.getElementById('referenciapago').value = '';
+        document.getElementById('select-banco').value = '';
+        document.getElementById('tipo-pago').value = '';
+      }
+      break;
+    default:
+      console.log('default switch for change');
+  }
+});
+
+document.querySelector('.fechacontrolasistencia').value = dateToAMD(hoy);
 
 historia.addEventListener('submit', async e => {
   e.preventDefault();
-  const nombre = autoCapital(historia['nombre'].value);
-  const apellido = autoCapital(historia['apellido'].value);
-  const cedula = historia['cedula'].value;
+  const nombre = firstUpperCase(historia['nombre'].value);
+  const apellido = firstUpperCase(historia['apellido'].value);
+  const cedula = historia['cedula'].value || ' ';
   const fnacimiento = historia['fnacimiento'].value;
   const celular = historia['celular'].value;
   const tlflocal = historia['tlflocal'].value;
@@ -219,7 +161,6 @@ historia.addEventListener('submit', async e => {
   const motivoultimaconsulta = historia['motivoultimaconsulta'].value;
   const checkcomplicaciones = document.querySelector('input[name="checkcomplicaciones"]:checked').value;
   const cualescomplicaciones = historia['cualescomplicaciones'].value;
-  //const texttratamiento = historia['texttratamiento'].value;
   const fechacontrolasistencia = historia['fechacontrolasistencia'].value;
   const evaluaciongeneral = historia['evaluaciongeneral'].value;
   const tratamientoaplicado = historia['tratamientoaplicado'].value;
@@ -230,17 +171,23 @@ historia.addEventListener('submit', async e => {
   const montopagado = parseFloat(historia['montopagado'].value).toFixed(2);
   const montopagadobs = parseFloat(historia['montopagadobs'].value).toFixed(2);
   const cambiodia = parseFloat(historia['cambiodia'].value).toFixed(2);
-  //Crear Objeto para enviar a firebase con todos los campos
 
-  const historiaPaciente = {
+  const objPaciente = {
     nombre,
     apellido,
+    celular,
+    edad,
+    createdAt: serverTimestamp(),
+  };
+
+  const { id } = await addDoc(collection(db, 'pacientes'), objPaciente);
+
+  const objHistoria = {
+    idPaciente: id,
     cedula,
     fnacimiento,
-    celular,
     tlflocal,
     email,
-    edad,
     genero,
     edocivil,
     direccion1,
@@ -280,12 +227,12 @@ historia.addEventListener('submit', async e => {
     motivoultimaconsulta,
     checkcomplicaciones,
     cualescomplicaciones,
+    createdAt: serverTimestamp(),
   };
 
-  const { id } = await addDoc(collectionRef, historiaPaciente);
-  localStorage.setItem('pacienteActual', JSON.stringify(id));
+  addDoc(collection(db, 'historias'), objHistoria);
 
-  const controlAsistencia = {
+  const objControl = {
     idPaciente: id,
     fecha: fechacontrolasistencia,
     esCita1: true,
@@ -301,52 +248,28 @@ historia.addEventListener('submit', async e => {
     createdAt: serverTimestamp(),
   };
 
-  addDoc(collection(db, 'controlasistencias'), controlAsistencia)
-    .then(result => {
-      console.log('SE HA AGREGADO UN NUEVO CONTROL DE ASISTENCIAS');
-       historia.reset();
-       window.history.back();
-    })
-    .catch(err => {
-      console.log('Hubo un error al agregar control de asistencias', err.message);
-    });
+  addDoc(collection(db, 'controlasistencias'), objControl);
 
   alert('Paciente Agregado con exito!');
   historia.reset();
-  window.history.back();
-}); //end of formulario submit
-
-btnCerrar.addEventListener('click', () => {
   window.close();
-});
-
-//codigo para los custom inputs de la seccion contacto
-inputs.forEach(input => {
-  input.addEventListener('focus', focusFunc);
-  input.addEventListener('blur', blurFunc);
-});
-
-function focusFunc() {
-  let parent = this.parentNode;
-  parent.classList.add('focus');
-}
-
-function blurFunc() {
-  let parent = this.parentNode;
-  if (this.value == '') {
-    parent.classList.remove('focus');
-  }
-}
-//fin del codigo para los custom inputs de la seccion contacto
-
-selectorEvaluacion.addEventListener('change', () => {
-  textboxEvaluacion.value += ' - ' + selectorEvaluacion.value + '\r\n';
-});
-
-selectorTratamiento.addEventListener('change', () => {
-  textboxTratamiento.value += ' - ' + selectorTratamiento.value + '\r\n';
 });
 
 function validarInput(valor, exp) {
   return valor.match(exp) ? true : false;
 }
+
+historia.addEventListener('focusin', e => {
+  e.target.parentNode.classList.add('focus');
+});
+
+historia.addEventListener('focusout', e => {
+  if (e.target.value == '' || e.target.value == ' ') {
+    e.target.parentNode.classList.remove('focus');
+  }
+});
+
+document.querySelector('.volver').addEventListener('click', e => {
+  e.preventDefault();
+  window.close();
+});

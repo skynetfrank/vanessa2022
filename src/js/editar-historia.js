@@ -1,201 +1,153 @@
 import { db } from '../js/firebaseconfig';
 import { collection, doc, query, where, updateDoc, getDoc, getDocs, serverTimestamp } from 'firebase/firestore';
+import { calcEdad, dolarToday, firstUpperCase, dateToAMD } from '../commons/utilities';
 
 const idPacienteLocal = JSON.parse(localStorage.getItem('pacienteActual'));
 const historia = document.getElementById('historia-form');
-const inputs = document.querySelectorAll('.input');
-const btnCerrar = document.querySelector('.volver');
-const inputDolares = document.getElementById('montopagado');
-const inputCambio = document.getElementById('cambiodia');
-const inputBolivares = document.getElementById('montopagadobs');
-const selectorEvaluacion = document.getElementById('selector-evaluacion');
-const selectorTratamiento = document.getElementById('selector-tratamiento');
-const textboxEvaluacion = document.getElementById('evaluaciongeneral');
-const textboxTratamiento = document.getElementById('tratamientoaplicado');
-const controlesRef = collection(db, 'controlasistencias');
-const myQuery = query(controlesRef, where('idPaciente', '==', idPacienteLocal), where('esCita1', '==', true));
-const inputEdad = document.getElementById('edad');
-const inputPeso = document.getElementById('peso');
-const inputEstatura = document.getElementById('estatura');
-const inputCelular = document.getElementById('celular');
-const inputLocal = document.getElementById('tlflocal');
-const inputCedula = document.getElementById('cedula');
-const fechaNacimiento = document.getElementById('fnacimiento');
-const inputFormapago = document.getElementById('formadepago');
+const controlQuery = query(
+  collection(db, 'controlasistencias'),
+  where('idPaciente', '==', idPacienteLocal),
+  where('esCita1', '==', true)
+);
+const historiaQuery = query(collection(db, 'historias'), where('idPaciente', '==', idPacienteLocal));
+const allInputs = document.querySelectorAll('.input');
+const hoy = new Date();
+let idHistoriaActual;
 
-const eventoFocus = new FocusEvent('focus', {
-  view: window,
-  bubbles: true,
-  cancelable: true,
-});
-
-fechaNacimiento.addEventListener('blur', e => {
+historia.addEventListener('focusout', e => {
   e.preventDefault();
-  const fechaActual = new Date();
-  const anoActual = parseInt(fechaActual.getFullYear());
-  const mesActual = parseInt(fechaActual.getMonth() + 1);
-  const diaActual = parseInt(fechaActual.getDate());
+  let elemento = e.target.id;
 
-  const anoNacimiento = parseInt(String(fechaNacimiento.value).substring(0, 4));
-  const mesNacimiento = parseInt(String(fechaNacimiento.value).substring(5, 7));
-  const diaNacimiento = parseInt(String(fechaNacimiento.value).substring(8, 10));
-
-  let edad = 0;
-
-  edad = anoActual - anoNacimiento;
-  if (mesActual < mesNacimiento) {
-    edad--;
-  } else if (mesActual == mesNacimiento) {
-    if (diaActual < diaNacimiento) {
-      edad--;
-    }
-  }
-  document.getElementById('edad').dispatchEvent(eventoFocus);
-  document.getElementById('edad').value = edad;
-});
-
-function dolarToday() {
-  fetch('https://s3.amazonaws.com/dolartoday/data.json')
-    .then(res => res.json())
-    .then(data => {
-      const cambio = data.USD.dolartoday;
+  switch (elemento) {
+    case 'fnacimiento':
+      document.getElementById('edad').parentNode.classList.add('focus');
+      document.getElementById('edad').value = calcEdad(document.getElementById('fnacimiento').value);
+      break;
+    case 'montopagado':
+      e.preventDefault();
+      dolarToday(
+        document.getElementById('cambiodia'),
+        document.getElementById('montopagado'),
+        document.getElementById('montopagadobs')
+      );
+      break;
+    case 'cambiodia':
+      const cambio = historia['cambiodia'].value;
       const dolares = document.getElementById('montopagado').value;
-      inputCambio.dispatchEvent(eventoFocus);
-      inputBolivares.dispatchEvent(eventoFocus);
-      historia['cambiodia'].value = cambio;
       historia['montopagadobs'].value = (parseFloat(cambio) * parseFloat(dolares)).toFixed(2);
-    })
-    .catch(err => {
-      alert('La api de Dolar Today No esta disponible');
-      historia['cambiodia'].value = 0;
-      historia['montopagadobs'].value = (parseFloat(cambio) * parseFloat(dolares)).toFixed(2);
-    });
-}
-
-inputDolares.addEventListener('blur', e => {
-  e.preventDefault();
-  dolarToday();
-});
-
-inputEdad.addEventListener('blur', e => {
-  e.preventDefault();
-  const valor = parseInt(inputEdad.value);
-  if (valor < 2 || valor > 99) {
-    inputEdad.value = '';
-    alert('La edad debe estar entre 2 y 99 años');
+      break;
+    case 'edad':
+      const valorEdad = parseInt(document.getElementById('edad').value);
+      if (valorEdad < 2 || valorEdad > 99) {
+        document.getElementById('edad').value = '';
+        alert('La edad debe estar entre 2 y 99 años');
+      }
+      break;
+    case 'peso':
+      const valorPeso = parseInt(document.getElementById('peso').value);
+      if (valorPeso < 5 || valorPeso > 250) {
+        document.getElementById('peso').value = '';
+        alert('El peso debe estar entre 5 y 250 kgs.');
+      }
+      break;
+    case 'estatura':
+      const valorEstatura = parseInt(document.getElementById('estatura').value);
+      if (valorEstatura < 0.5 || valorEstatura > 2.3) {
+        document.getElementById('estatura').value = '';
+        alert('La Estatura debe estar entre 0.5 y 2.30 mts');
+      }
+      break;
+    default:
+      console.log('default switch for blur');
   }
 });
 
-inputPeso.addEventListener('blur', e => {
+historia.addEventListener('change', e => {
   e.preventDefault();
-  const valor = parseInt(inputPeso.value);
-  if (valor < 5 || valor > 250) {
-    inputPeso.value = '';
-    alert('El peso debe estar entre 5 y 250 kgs.');
+  let elemento = e.target.id;
+
+  switch (elemento) {
+    case 'selector-evaluacion':
+      document.getElementById('evaluaciongeneral').value +=
+        ' - ' + document.getElementById('selector-evaluacion').value + '\r\n';
+      break;
+    case 'selector-tratamiento':
+      document.getElementById('tratamientoaplicado').value +=
+        ' - ' + document.getElementById('selector-tratamiento').value + '\r\n';
+      break;
+    case 'celular':
+      const celularRegex = /^(0414|0424|0412|0416|0426)[-][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/g;
+      if (!validarInput(document.getElementById('celular').value, celularRegex)) {
+        alert('Ejemplo: 0412-555-55-55');
+        document.getElementById('celular').value = '';
+      }
+      break;
+    case 'tlflocal':
+      const telefonoRegex = /^[0-9]{4}[-][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/g;
+      validarInput(document.getElementById('tlflocal').value, telefonoRegex)
+        ? ''
+        : (document.getElementById('tlflocal').value = '');
+      if (!validarInput(document.getElementById('tlflocal').value, telefonoRegex)) {
+        alert('Ejemplo: 0212-555-55-55');
+        document.getElementById('tlflocal').value = '';
+      }
+      break;
+    case 'cedula':
+      const cedulaRegex = /^[V|E|J|P][-][0-9]{5,9}$/;
+      if (!validarInput(document.getElementById('cedula').value, cedulaRegex)) {
+        alert('Ejemplo: V-999999999');
+        document.getElementById('cedula').value = '';
+      }
+      break;
+    case 'formadepago':
+      document.getElementById('referenciapago').parentNode.classList.add('focus');
+      if (document.getElementById('formadepago').value == 'Efectivo') {
+        document.getElementById('referenciapago').value = 'cash$';
+        document.getElementById('select-banco').value = 'Otro';
+        document.getElementById('tipo-pago').value = 'Total';
+      } else {
+        document.getElementById('referenciapago').value = '';
+        document.getElementById('select-banco').value = '';
+        document.getElementById('tipo-pago').value = '';
+      }
+      break;
+    default:
+      console.log('default switch for change');
   }
 });
 
-inputEstatura.addEventListener('blur', e => {
-  e.preventDefault();
-  const valor = parseInt(inputEstatura.value);
-  if (valor < 0.5 || valor > 2.3) {
-    inputEstatura.value = '';
-    alert('La Estatura debe estar entre 0.5 y 2.30 mts');
-  }
-});
+document.querySelector('.fechacontrolasistencia').value = dateToAMD(hoy);
 
-inputCelular.addEventListener('change', e => {
-  e.preventDefault();
-  const celularRegex = /^(0414|0424|0412|0416|0426)[-][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/g;
-  if (!validarInput(inputCelular.value, celularRegex)) {
-    alert('Ejemplo: 0412-555-55-55');
-    inputCelular.value = '';
-  }
-});
-
-inputLocal.addEventListener('change', e => {
-  e.preventDefault();
-  const telefonoRegex = /^[0-9]{4}[-][0-9]{3}[-][0-9]{2}[-][0-9]{2}$/g;
-  validarInput(inputLocal.value, telefonoRegex) ? '' : (inputLocal.value = '');
-  if (!validarInput(inputLocal.value, telefonoRegex)) {
-    alert('Ejemplo: 0212-555-55-55');
-    inputCelular.value = '';
-  }
-});
-
-inputCedula.addEventListener('change', e => {
-  e.preventDefault();
-  const cedulaRegex = /^[V|E|J|P][-][0-9]{5,9}$/;
-  if (!validarInput(inputCedula.value, cedulaRegex)) {
-    alert('Ejemplo: V-999999999');
-    inputCedula.value = '';
-  }
-});
-
-inputFormapago.addEventListener('change', e => {
-  e.preventDefault();
-  document.getElementById('referenciapago').dispatchEvent(eventoFocus);
-  if (inputFormapago.value == 'Efectivo') {
-    document.getElementById('referenciapago').value = 'cash$';
-    document.getElementById('select-banco').value = 'Otro';
-  } else {
-    document.getElementById('referenciapago').value = '';
-    document.getElementById('select-banco').value = '';
-  }
-});
-
-localStorage.clear();
-var date = new Date();
-document.querySelector('.fechacontrolasistencia').value =
-  date.getFullYear().toString() +
-  '-' +
-  (date.getMonth() + 1).toString().padStart(2, 0) +
-  '-' +
-  date.getDate().toString().padStart(2, 0);
-
-function autoCapital(cadena) {
-  return cadena.charAt(0).toUpperCase() + cadena.slice(1);
-}
-
-function getControl() {
-  getDocs(myQuery).then(res => {
-    res.forEach(doc => {
-      fillTextos(doc.id);
-    });
-  });
-}
-
-function fillTextos(docid) {
-  const controlRef = doc(db, 'controlasistencias', docid);
-  getDoc(controlRef).then(doc => {
-    const data = doc.data();
-    document.querySelector('.fechacontrolasistencia').value = data.fecha;
-    document.getElementById('evaluaciongeneral').value = data.evaluaciongeneral;
-    document.getElementById('tratamientoaplicado').value = data.tratamientoAplicado;
-    document.getElementById('formadepago').value = data.pago;
-    document.getElementById('select-banco').value = data.banco;
-    document.getElementById('tipo-pago').value = data.tipopago;
-    document.getElementById('referenciapago').value = data.referencia;
-    document.getElementById('montopagado').value = data.monto;
-    document.getElementById('cambiodia').value = data.cambiodia;
-    document.getElementById('montopagadobs').value = data.montoBs;
-  });
-}
-
-//GET DATA FOR CRUD: EDITAR HISTORIA DE PACIENTE **************************************************
 window.addEventListener('DOMContentLoaded', () => {
-  const docRef = doc(db, 'pacientes', idPacienteLocal);
+  getDoc(doc(db, 'pacientes', idPacienteLocal)).then(documento => {
+    const paciente = documento.data();
+    document.getElementById('nombre').value = paciente.nombre;
+    document.getElementById('apellido').value = paciente.apellido;
+    document.getElementById('celular').value = paciente.celular;
+    document.getElementById('edad').value = paciente.edad;
+  });
 
-  getDoc(docRef).then(docu => {
+  getDocs(historiaQuery).then(histo => {
+    histo.forEach(doc => {
+      idHistoriaActual = doc.id;
+      getHistoria(doc.id);
+    });
+  });
+
+  getDocs(controlQuery).then(res => {
+    res.forEach(doc => {
+      getControl(doc.id);
+    });
+  });
+});
+
+function getHistoria(paramid) {
+  getDoc(doc(db, 'historias', paramid)).then(docu => {
     const data = docu.data();
-    document.getElementById('nombre').value = data.nombre;
-    document.getElementById('apellido').value = data.apellido;
     document.getElementById('cedula').value = data.cedula;
     document.getElementById('fnacimiento').value = data.fnacimiento;
-    document.getElementById('celular').value = data.celular;
     document.getElementById('tlflocal').value = data.tlflocal;
     document.getElementById('email').value = data.email;
-    document.getElementById('edad').value = data.edad;
 
     data.genero == 'hombre' ? document.getElementById('checkgenero1').setAttribute('checked', 'true') : '';
     data.genero == 'mujer' ? document.getElementById('checkgenero2').setAttribute('checked', 'true') : '';
@@ -294,18 +246,33 @@ window.addEventListener('DOMContentLoaded', () => {
       ? document.getElementById('checkcomplicaciones2').setAttribute('checked', 'false')
       : '';
     document.getElementById('cualescomplicaciones').value = data.cualescomplicaciones;
-
-    getControl();
   }); //getDoc promise end
-});
+}
+
+function getControl(docid) {
+  const controlRef = doc(db, 'controlasistencias', docid);
+  getDoc(controlRef).then(doc => {
+    const data = doc.data();
+    document.querySelector('.fechacontrolasistencia').value = data.fecha;
+    document.getElementById('evaluaciongeneral').value = data.evaluaciongeneral;
+    document.getElementById('tratamientoaplicado').value = data.tratamientoAplicado;
+    document.getElementById('formadepago').value = data.pago;
+    document.getElementById('select-banco').value = data.banco;
+    document.getElementById('tipo-pago').value = data.tipopago;
+    document.getElementById('referenciapago').value = data.referencia;
+    document.getElementById('montopagado').value = data.monto;
+    document.getElementById('cambiodia').value = data.cambiodia;
+    document.getElementById('montopagadobs').value = data.montoBs;
+  });
+}
 
 //END OF :  GET DATA FOR CRUD: EDITAR HISTORIA DE PACIENTE **************************************************
 
 historia.addEventListener('submit', e => {
   e.preventDefault();
-
-  const nombre = autoCapital(historia['nombre'].value);
-  const apellido = autoCapital(historia['apellido'].value);
+  console.log('idHistoriaActual asignado===>>>:', idHistoriaActual);
+  const nombre = firstUpperCase(historia['nombre'].value);
+  const apellido = firstUpperCase(historia['apellido'].value);
   const cedula = historia['cedula'].value;
   const fnacimiento = historia['fnacimiento'].value;
   const celular = historia['celular'].value;
@@ -362,17 +329,20 @@ historia.addEventListener('submit', e => {
   const montopagado = historia['montopagado'].value;
   const montopagadobs = historia['montopagadobs'].value;
   const cambiodia = historia['cambiodia'].value;
-  //Crear Objeto para enviar a firebase con todos los campos
 
-  const historiaPaciente = {
+  const objPaciente = {
     nombre,
     apellido,
+    celular,
+    edad,
+    createdAt: serverTimestamp(),
+  };
+
+  const objHistoria = {
     cedula,
     fnacimiento,
-    celular,
     tlflocal,
     email,
-    edad,
     genero,
     edocivil,
     direccion1,
@@ -412,10 +382,8 @@ historia.addEventListener('submit', e => {
     motivoultimaconsulta,
     checkcomplicaciones,
     cualescomplicaciones,
+    createdAt: serverTimestamp(),
   };
-
-  const updateDocRef = doc(db, 'pacientes', idPacienteLocal);
-  updateDoc(updateDocRef, historiaPaciente);
 
   const controlAsistencia = {
     fecha: fechacontrolasistencia,
@@ -432,6 +400,22 @@ historia.addEventListener('submit', e => {
     createdAt: serverTimestamp(),
   };
 
+  // 1. Actualizar la coleccion de Pacientes
+  updateDoc(doc(db, 'pacientes', idPacienteLocal), objPaciente);
+  // 2. Actualizar la coleccion de Historias
+  getDocs(historiaQuery).then(res => {
+    res.forEach(doc => {
+      console.log(doc.id, 'historia:', doc.data());
+      actualizarHistoria(doc.id);
+    });
+  });
+  // 3.Actualizar Coleccion de Controles (1ra. Cita)
+  getDocs(controlQuery).then(res => {
+    res.forEach(doc => {
+      actualizarControl(doc.id);
+    });
+  });
+
   function actualizarControl(docid) {
     console.log('inside actualizarControl()');
     const updateControlRef = doc(db, 'controlasistencias', docid);
@@ -442,46 +426,26 @@ historia.addEventListener('submit', e => {
     });
   }
 
-  getDocs(myQuery).then(res => {
-    res.forEach(doc => {
-      actualizarControl(doc.id);
+  function actualizarHistoria(docid) {
+    console.log('historia ID:', docid);
+    const updateHistoriaRef = doc(db, 'historias', docid);
+    updateDoc(updateHistoriaRef, objHistoria).then(res => {
+      historia.reset();
+      alert('Historia Actualizada con exito!');
+      window.close();
     });
-  });
-});
-
-btnCerrar.addEventListener('click', e => {
-  e.preventDefault();
-  window.close();
-});
-
-//codigo para los custom inputs de la seccion contacto
-inputs.forEach(input => {
-  input.addEventListener('focus', focusFunc);
-  input.addEventListener('blur', blurFunc);
-  input.dispatchEvent(eventoFocus);
-});
-
-function focusFunc() {
-  let parent = this.parentNode;
-  parent.classList.add('focus');
-}
-
-function blurFunc() {
-  let parent = this.parentNode;
-  if (this.value == '') {
-    parent.classList.remove('focus');
   }
-}
-//fin del codigo para los custom inputs de la seccion contacto
-
-selectorEvaluacion.addEventListener('change', () => {
-  textboxEvaluacion.value += ' - ' + selectorEvaluacion.value + '\r\n';
-});
-
-selectorTratamiento.addEventListener('change', () => {
-  textboxTratamiento.value += ' - ' + selectorTratamiento.value + '\r\n';
-});
+}); //FIN DE SUBMIT
 
 function validarInput(valor, exp) {
   return valor.match(exp) ? true : false;
 }
+
+allInputs.forEach(item => {
+  item.parentNode.classList.add('focus');
+});
+
+document.querySelector('.volver').addEventListener('click', e => {
+  e.preventDefault();
+  window.close();
+});

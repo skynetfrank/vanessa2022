@@ -1,8 +1,7 @@
 {
   "hosting": {
-    "target": "adminpage",
+    "target": "admin",
     "public": "dist",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
-    
   }
 }

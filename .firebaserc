@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "dental-project-def14"
+    "default": "app-odonto-web"
   },
   "targets": {
-    "dental-project-def14": {
+    "app-odonto-web": {
       "hosting": {
-        "adminpage": [
-          "vanessa-admin-site"
+        "admin": [
+          "od-admin"
         ]
       }
     }
