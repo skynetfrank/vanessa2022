@@ -1,4 +1,4 @@
-/*  powered by: Franklin Bolivar, noviembre-2021 */
+/*  powered by: Franklin Bolivar, febrero-2022 */
 
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600');
 
@@ -22,10 +22,6 @@ body {
   display: none;
 }
 
-#floating-images {
-  display: none;
-}
-
 section {
   width: 100%;
   min-height: 100vh;
@@ -36,39 +32,12 @@ section {
   display: none;
 }
 
-#seccion__inicio {
-  background: url('../images/inicio.jpg') no-repeat top center;
-  background-size: 100% 100%;
-  z-index: 9999999;
-}
-
-.scroll-container {
-  width: 95%;
-  height: 400px;
-  overflow: auto;
-}
-
-.loading {
-  display: none;
-}
-
-.loading.active {
-  display: block;
-  font-size: 1rem;
-  text-align: center;
-  margin: 10px 0;
-  color: #9132bd;
-  font-weight: bold;
-}
-.load-more {
-  display: none;
-}
-
 #tabla-paciente thead tr {
   position: sticky;
   top: 0px;
   z-index: 9;
 }
+
 #usuario {
   position: relative;
   top: -30px;
@@ -76,63 +45,23 @@ section {
   max-width: 100px;
   color: blanchedalmond;
 }
-
-#sesion {
-  position: absolute;
-  width: 100%;
-  display: flex;
-  top: 200px;
-  justify-content: center;
-}
-
-#form-sesion a {
-  font-size: 10px;
-  color: rgb(207, 206, 204);
-}
-
-.version {
-  font-size: 10px;
-  color: rgb(207, 206, 204);
-  margin-top: 10px;
-}
-
-.login__container {
-  position: relative;
-  max-width: 300px;
-  width: 100%;
-  max-height: 300px;
-  height: 100%;
-  background: #9132bd;
-  padding: 30px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 15px;
-}
-
-.login__container .title {
-  text-align: center;
-  position: relative;
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 35px;
-}
-
 .btn {
   display: block;
   padding: 0.6rem 1.3rem;
-  background-color: #fff;
-  border: 2px solid #fafafa;
+  background-color: rgb(13, 194, 194);
+  color: white;
   font-size: 1rem;
   font-weight: bolder;
-  color: #0361df;
-  line-height: 1;
   border-radius: 25px;
   cursor: pointer;
   transition: 0.3s;
-  margin: 20px 0px;
+  margin: 10px;
+  border: none;
 }
 
 .btn:hover {
-  color: orangered;
+  background-color: aqua;
+  color: black;
 }
 
 /* Efectos 2022 */
@@ -233,62 +162,6 @@ section {
 }
 
 /* Fin de Efectos 2022  */
-
-/* CUSTOM FEBB INPUTS */
-.input__div {
-  height: 35px;
-  width: 100%;
-  margin: 20px 0px;
-  position: relative;
-}
-
-.input__div.pw {
-  margin-bottom: 0;
-}
-
-.input__div.pw a {
-  font-size: 12px;
-  color: bisque;
-}
-
-.input__div input {
-  width: 100%;
-  outline: none;
-  font-size: 18px;
-  padding: 10px 5px 0px 15px;
-  border: none;
-  border-bottom: 1px solid white;
-  background-color: #9132bd;
-  transition: all 0.3s ease;
-  color: antiquewhite;
-}
-
-.input__div input:focus {
-  border-color: black;
-}
-
-.input__div label {
-  position: absolute;
-  top: 50%;
-  left: 5px;
-  color: white;
-  font-weight: 400;
-  font-size: 16px;
-  pointer-events: none;
-  transform: translateY(-50%);
-  transition: all 0.3s ease;
-}
-
-.input__div input:focus ~ label,
-.input__div input:valid ~ label {
-  top: 0%;
-  font-size: 12px;
-  font-weight: bold;
-  color: black;
-  transform: translateY(-50%);
-}
-
-/* FIN DE CUSTOM FEBB INPUTS */
 
 /* ----- MY CUSTOM LOADING SPINNER  */
 
@@ -424,7 +297,7 @@ nav #hamburguesa {
   height: 40px;
   cursor: pointer;
   float: right;
-  margin: 8px 40px;
+  margin: 8px 35px;
   display: none;
 }
 
@@ -444,17 +317,16 @@ nav #hamburguesa {
 
 .table td,
 .table th {
-  padding: 5px;
   border: 1px solid #ddd;
   text-align: center;
   font-size: 1rem;
-  vertical-align: middle;
-  min-height: 40px;
+  padding: 0 10px;
 }
 
 .table th {
   background-color: #9132bd;
   color: white;
+  padding: 5px;
 }
 
 .table tbody tr:nth-child(even) {
@@ -482,22 +354,6 @@ table.vhighlight > tbody > tr > td:hover {
   width: 150px;
 }
 
-button.volver-info {
-  position: absolute;
-  width: 50px;
-  height: 25px;
-  font-size: 13px;
-  padding: 5px;
-  top: 10px;
-  right: 185px;
-  z-index: 9;
-  background-color: #0361df;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-}
-
 /* FIN DE TABLA PACIENTES */
 
 /*INPUT SEARCH CUSTOM DE FEBB   */
@@ -517,7 +373,6 @@ button.volver-info {
   overflow: hidden;
   margin-bottom: 5px;
   margin-right: 10px;
-  display: none;
 }
 
 .search__input {
@@ -556,6 +411,7 @@ button.volver-info {
   pointer-events: all;
   cursor: pointer;
   margin-left: 10px;
+  border: none;
 }
 
 .td-btn.info {
@@ -619,9 +475,6 @@ button.volver-info {
   color: #631488;
   font-weight: bold;
   pointer-events: none;
-}
-.btn-menu-table:hover {
-  color: aqua;
 }
 
 .btn-menu-table.info {
@@ -951,15 +804,8 @@ table.info {
   }
 }
 
-.btn-eliminar-cita {
-  display: block;
-  padding: 10px;
+.btn.btn-eliminar-cita {
   background-color: #9132bd;
-  border-radius: 5px;
-  color: #fff;
-  border: none;
-  margin-top: 10px;
-  font-weight: bold;
 }
 
 .titulo-horas {
@@ -988,18 +834,6 @@ h3 {
 
 .bold {
   font-weight: bold;
-}
-
-.btn-bloquear {
-  padding: 5px;
-  background-color: #ff7979;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #fff;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
 }
 
 /*==========================
@@ -1203,85 +1037,6 @@ h2 {
   padding: 0px 0 2px 0;
 }
 
-.td-id-hidden,
-#th-id-hidden {
-  display: none;
-}
-
-.detail table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-  table-layout: auto;
-}
-td {
-  word-wrap: break-word;
-  display: revert;
-}
-
-.ocultar-td {
-  display: none;
-}
-
-.detail table tbody tr:nth-child(even) {
-  background-color: #e5e2e2;
-}
-
-.detail table th {
-  background-color: #15a1fe;
-}
-
-.detail table th,
-.detail table td {
-  padding: 0.2rem;
-  text-align: center;
-  font-size: 14px;
-}
-
-.detail table tr:hover {
-  background-color: #f2f2f2;
-}
-
-.detail td i {
-  width: 30px;
-  height: 30px;
-  padding: 8px;
-  color: #fff;
-  border-radius: 50%;
-  cursor: pointer;
-  margin-right: 3px;
-}
-
-.td-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-}
-
-.dash-status {
-  padding: 0.3rem 0.5rem;
-  border-radius: 30px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  font-size: 0.7rem;
-}
-
-.onprogress {
-  background-color: #fff2d7;
-  color: #ffa705;
-}
-
-.confirmed {
-  background-color: #d7effc;
-  color: #15a1fe;
-}
-
-.fullfilled {
-  background-color: #dcedde;
-  color: #37aa38;
-}
-
 .dash-customer-wrapper {
   display: grid;
   grid-template-columns: 0.3fr 1fr;
@@ -1319,11 +1074,6 @@ td {
 .dash-customer-date {
   text-align: left;
   color: #9092a9;
-}
-
-.fa-search {
-  background: #ffa705;
-  pointer-events: all;
 }
 
 #btn-control-paciente {
@@ -1424,11 +1174,12 @@ td {
     color: black;
     background-color: #9132bd;
     font-weight: bold;
-    padding-top: 8px;
+    padding: 8px;
   }
   .table td {
     text-align: right;
     position: relative;
+    padding: 3px;
   }
   .table td::before {
     content: attr(data-label);
@@ -1505,13 +1256,6 @@ td {
       'total4'
       'detail'
       'customer';
-  }
-
-  .detail table th,
-  .detail table td {
-    padding: 0.2rem 0;
-    text-align: center;
-    font-size: 8px;
   }
 }
 

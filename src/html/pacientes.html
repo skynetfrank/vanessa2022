@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <div id="floating-images">
+  <div id="floating-images" class="hidden">
     <img src="../images/odograma-icon.png" alt="odograma">
     <img src="../images/odograma1.jpg" alt="odograma">
     <img src="../images/clock-icon.png" alt="clock">
@@ -55,7 +55,7 @@
         <table class="table highlight" id="tabla-paciente">
           <thead>
             <tr>
-              <th id="th-id-hidden">id</th>
+              <th class="hidden">id</th>
               <th>Nombre</th>
               <th>Apellido</th>
               <th>Edad</th>
@@ -67,10 +67,10 @@
           </tbody>
         </table>
       </div>
-      <div class="loading">cargando pacientes...</div>
+
     </div>
     <div class="info-container">
-      <button class="volver-info">volver</a></button>
+      <button class="btn volver-info">volver</a></button>
       <table class="table info vhighlight" id="tabla-info-paciente">
         <thead>
           <th></th>
@@ -185,25 +185,6 @@
               <i class="fas fa-hospital-user"></i>
             </div>
           </div>
-        </div>
-        <!--2 cards bottom-->
-        <div class="dash-card detail">
-          <!-- table pacientes aqui-->
-          <table id="tabla-dash-pacientes" class="striped highlight">
-            <thead>
-              <tr>
-                <th id="th-id-hidden">id</th>
-                <th></th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Edad</th>
-                <th>Celular</th>
-                <th>Telefono Local</th>
-              </tr>
-            </thead>
-            <tbody id="dash-pacientes-tbody">
-            </tbody>
-          </table>
         </div>
         <div class="dash-card customer">
           <h2>Citas Pendientes</h2>

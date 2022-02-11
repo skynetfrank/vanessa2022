@@ -200,7 +200,7 @@ function populateAgenda() {
                </h3>
                <h3><span class="bold">Mensaje:</span> ${data.msg}</h3>   
                 <h3><span class="bold">Telefono:</span> ${data.telefono}</h3>   
-               <button class="btn-eliminar-cita t-tip top" tip="Eliminar Esta Cita" data-idcita=${doc.id}>${
+               <button class="btn btn-eliminar-cita t-tip top" tip="Eliminar Esta Cita" data-idcita=${doc.id}>${
         data.status === 'Bloqueada' ? 'Desbloquear' : 'Eliminar'
       }</button>
                <span id="id-cita-eliminar">${doc.id}</span>         
@@ -470,7 +470,7 @@ function deleteHistoria(id) {
 function templatePacientes(paramsnapdoc, docid) {
   const paciente = paramsnapdoc;
   let prow = `<tr> 
-            <td id="td-titulo">Paciente</td>   
+            <td id="td-titulo" class="hidden">Paciente</td>   
             <td id="td-id-hidden">${docid}</td>                          
             <td data-label="Nombre">${paciente.nombre}</td>
             <td data-label="Apellido">${paciente.apellido}</td>
@@ -487,7 +487,7 @@ function templatePacientes(paramsnapdoc, docid) {
                    <ion-icon name="clipboard" class="btn-menu-table"></ion-icon>   
                 </button>                       
                 <button  class="td-btn odo t-tip top" id="btn-odograma" tip="Odograma" data-docid=${docid}  data-nom=${paciente.nombre} data-ape=${paciente.apellido}>
-                   <span class="img-btn"><img src="../images/34042cb0b9d6eb31f644.png" alt="odograma"></span>
+                   <span class="img-btn"><img src="../images/68a7a414591f9f349923.png" alt="odograma"></span>
                 </button>                            
                 <button  class="td-btn t-tip left" id="btn-eliminar-paciente" tip="Eliminar este Paciente" data-docid=${docid}>
                    <ion-icon name="trash" class="btn-menu-table"></ion-icon>
